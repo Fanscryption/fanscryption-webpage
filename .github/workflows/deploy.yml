@@ -1,0 +1,23 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SERVER: ${{ secrets.SERVER }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: init ssh agent
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_CI }}
+    - name: deploy
+      run: |
+        echo "$SERVER ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNwIURXmhMkzuR3shcgcZmzTwoVFzhLgSTEJKjnrDORZz5q8OM/YyR/Lre5HIG5xml+Sk8ovyPt1Xu19DwlN5+JehIBZNVgT7FhjzHG8y2ZFfbegeVLoekIPER0lCfg6tTMjlwR5ShGVT1JEiCtVj5StnWpJtUbZ289GiXaibu7vGVDcYdH/zPug86CJlmkQoNAcjBoD/qxmHuTIncClzmJ1GNDllFkPT8MEtM91X8h3JeZivhyRdVoWkNhIckhgWBTYIbU8pjIZP4aR0pBp8Y8bThPkp6LvnbylbmgmGHCmy7Kqpxt32J7/Xx5chMdKAuHKrAEv7ng3Zeaz9UsaPel1ileghnarg4kMcYAD80NYySW9ftjBWrQgeUetRqGUB6B+zBRxdei35vUfHai4UfCERn6FYUQybLsmxbncm2t+61cJTd+m/An60a+8fC7NDUttb2Kp+cNaOZDOJN9dlK2TBgvUWc9uvNxKNQQQRKf4GY34a7wjjHiN5xV3LulvM=" >> ~/.ssh/known_hosts
+        ssh ci@$SERVER "mkdir -p /var/www/irl"
+        scp -r public index.html "ci@$SERVER:/var/www/irl/"
