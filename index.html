@@ -294,6 +294,39 @@
       background-position-y: top;
       background-size: cover;
     }
+
+    .featured-projects {
+      text-align: center;
+    }
+
+    .featured-projects>a {
+      display: inline-flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      width: 220px;
+      margin: 1rem 10px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .featured-projects>a:hover {
+      /* overflow: visible; */
+    }
+
+    .featured-projects>a>.image-wrapper {
+      height: 190px;
+    }
+
+    .featured-projects>a>.image-wrapper>img {
+      max-width: none;
+      height: 100%;
+    }
+
+    .featured-projects .author {
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -354,6 +387,49 @@
       <p>Come join our discord and other socials to see some of the astounding work our community has produced. Also take a look at our featured projects below! We hope you enjoy…</p>
     </section>
 
+    <section>
+      <h2>Featured projects</h2>
+      <div id="js-featured-projects" class="featured-projects"></div>
+
+      <template id="project">
+        <a class="project">
+          <div class="image-wrapper">
+            <img alt="">
+          </div>
+          <span class="author"></span>
+        </a>
+      </template>
+
+      <script>
+        const projects = document.getElementById('js-featured-projects')
+        const template = document.getElementById('project')
+
+        const data = [
+          { author: 'Annex', image: './public/gallery/Annex.jpg' },
+          { author: 'Brazilian Scrybe of Arroz', image: './public/gallery/Brazilian Scrybe of Arroz.jpg' },
+          { author: 'GlyphGryph', image: './public/gallery/GlyphGryph.jpg' },
+          { author: 'LeshyIRL', image: './public/gallery/LeshyIRL.jpg' },
+          { author: 'MoxTheCat', image: './public/gallery/MoxTheCat.jpg' },
+          { author: 'Pixel Profilgate', image: './public/gallery/Pixel Profligate.png' },
+          { author: 'TFV', image: './public/gallery/TFV.jpg' },
+          { author: 'Ritbulau', image: './public/gallery/Ritbulau.png' },
+          { author: 'Ultradrive', image: './public/gallery/Ultradrive.png' },
+          { author: 'Your Average Capitalist', image: './public/gallery/YourAverageCapitalist.jpeg' },
+          { author: '(various artists)', image: './public/gallery/cardcontestsorry.png' },
+          { author: 'Goobert', image: './public/gallery/goobert.jpg' },
+        ].sort((a, b) => a.author.localeCompare(b.author))
+
+        for (const d of data) {
+          const p = template.content.cloneNode(true)
+
+          p.querySelector('span.author').textContent = d.author
+          p.querySelector('div.image-wrapper>img').src = d.image
+          p.querySelector('a.project').href = d.image
+
+          projects.appendChild(p)
+        }
+      </script>
+    </section>
   </main>
   <footer>
   </footer>
