@@ -1,0 +1,320 @@
+@font-face {
+  font-family: "Marksman";
+  src: url(Marksman.otf);
+}
+
+img {
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  color: white;
+  background-color: black;
+  background-image: url(./public/bg.jpg);
+  background-position-x: center;
+  background-repeat: repeat;
+  font-size: 200%;
+  font-family: 'Marksman';
+}
+
+#page-shadow {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: -10;
+  max-height: 100%;
+}
+
+header {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  text-align: center;
+  height: 300px;
+}
+
+h2 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 4rem;
+  font-weight: normal;
+}
+
+header h1 {
+  font-size: 10rem;
+  font-weight: normal;
+  margin: auto;
+  position: relative;
+}
+
+span.fan-made {
+  position: absolute;
+  bottom: -1rem;
+  right: 5rem;
+  font-size: 3rem;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  width: 1000px;
+  max-width: 90vw;
+  margin: auto;
+}
+
+main>section {
+  width: 100%;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  max-width: 50vw;
+  justify-content: space-between;
+
+  padding: 1rem;
+  background: #020a11;
+  border: 4px dashed #9e2630;
+
+  filter: drop-shadow(1px 2px 8px hsl(220deg 60% 20% / 0.3)) drop-shadow(2px 4px 16px hsl(220deg 60% 20% / 0.3)) drop-shadow(4px 8px 32px hsl(220deg 60% 20% / 0.3));
+}
+
+nav ul li {
+  margin: 0 1rem;
+}
+
+nav ul a {
+  width: 6rem;
+  height: 6rem;
+  padding: 0.2rem;
+  max-width: 10vw;
+  max-height: 10vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  text-decoration: none;
+  color: #9e2630;
+}
+
+.floating:hover {
+  background: #eef4c6;
+}
+
+/*
+.floating {
+  animation-name: floating;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  transition: 0.2s;
+}
+
+.floating:nth-child(1) {
+  animation-delay: -0.9s;
+}
+
+.floating:nth-child(2) {
+  animation-delay: -0.6s;
+}
+
+.floating:nth-child(3) {
+  animation-delay: -0.3s;
+}
+*/
+
+.pixel-icon {
+  image-rendering: pixelated;
+  width: 70%;
+  height: 70%;
+}
+
+#cobweb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+#leshy {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 900px;
+  height: 330px;
+  margin-bottom: 7rem;
+}
+
+#eyes {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  animation-name: default-zoom;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+}
+
+.eye {
+  animation-name: spin-clockwise;
+  animation-iteration-count: infinite;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+}
+
+.eye.left {
+  animation-direction: reverse;
+  animation-delay: -0.3s;
+}
+
+#foo {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+@keyframes spin-clockwise {
+  from {
+    transform: rotate(0deg) scale(0.7)
+  }
+
+  to {
+    transform: rotate(360deg) scale(0.7)
+  }
+}
+
+@keyframes floating {
+  from {
+    transform: translate(0, 0)
+  }
+
+  to {
+    transform: translate(0, -5%)
+  }
+}
+
+nav {
+  animation-name: nav-zoom;
+  animation-duration: 4s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes nav-zoom {
+  from {
+    transform: scale(0.8)
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.hands {
+  animation-name: default-zoom;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+
+  position: absolute;
+
+  top: -40px;
+  z-index: -1;
+}
+
+.hands>img {
+  animation-name: hands-wobble;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes default-zoom {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes hands-wobble {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.05);
+  }
+}
+
+section.showcase {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+section.showcase>.wrapper {
+  display: flex;
+  flex: 1;
+  margin: 0 0.5rem;
+  background: crimson;
+  padding: 1rem;
+  height: 12rem;
+  overflow: hidden;
+}
+
+section.showcase>.wrapper>img {
+  height: 100%;
+  width: fit-content;
+}
+
+footer {
+  margin-top: 5rem;
+  height: 15rem;
+  background-image: url(./public/leshy/table.png);
+  background-position-y: top;
+  background-size: cover;
+}
+
+.featured-projects {
+  text-align: center;
+}
+
+.featured-projects>a {
+  display: inline-flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 220px;
+  margin: 1rem 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.featured-projects>a:hover {
+  /* overflow: visible; */
+}
+
+.featured-projects>a>.image-wrapper {
+  height: 190px;
+}
+
+.featured-projects>a>.image-wrapper>img {
+  max-width: none;
+  height: 100%;
+}
+
+.featured-projects .author {
+  text-align: center;
+}
