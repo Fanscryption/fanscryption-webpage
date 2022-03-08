@@ -52,7 +52,7 @@ span.fan-made {
   position: absolute;
   bottom: -1rem;
   right: 5rem;
-  font-size: 3rem;
+  font-size: 0.3em;
 }
 
 main {
@@ -62,6 +62,7 @@ main {
   width: 1000px;
   max-width: 90vw;
   margin: auto;
+  overflow: hidden;
 }
 
 main>section {
@@ -126,6 +127,7 @@ nav ul a {
   width: 900px;
   height: 330px;
   margin-bottom: 7rem;
+  max-width: 100%;
 }
 
 #eyes {
@@ -237,7 +239,7 @@ nav {
 
 footer {
   margin-top: 5rem;
-  padding-top: 2rem;
+  padding-top: 1vw;
   height: 12rem;
   display: flex;
   flex-flow: column;
@@ -281,4 +283,47 @@ footer span {
 
 .featured-projects .author {
   text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+  
+  #cobweb {
+    height: 20vmin;
+  }
+
+  header {
+    height: 30vw;
+  }
+
+  header h1 {
+    font-size: 15vw;
+  }
+
+  header h1 span.fan-made {
+    font-size: 0.4em;
+  }
+
+  #leshy {
+    height: initial;
+    margin-bottom: 5vw;
+    justify-content: center;
+  }
+
+  #eyes {
+    width: 27vw;
+  }
+
+  .eye {
+    width: 10vw;
+    height: 10vw;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav ul li {
+    margin: 1rem 2rem;
+  }
 }
