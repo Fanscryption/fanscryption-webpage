@@ -239,11 +239,11 @@ nav {
 
 footer {
   margin-top: 5rem;
-  padding-top: 1vw;
   height: 12rem;
   display: flex;
   flex-flow: column;
   align-items: center;
+  justify-content: center;
   background-image: url(./public/leshy/table.png);
   background-position-y: top;
   background-position-x: center;
@@ -252,8 +252,9 @@ footer {
   color: #eee;
 }
 
-footer span {
-  text-shadow: 1px 1px 2px rgb(80, 45, 29);
+footer ul {
+  width: 60%;
+  filter: drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
 }
 
 .featured-projects {
