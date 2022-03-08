@@ -207,9 +207,10 @@ nav {
 .hands>img {
   animation-name: hands-wobble;
   animation-duration: 5s;
+  animation-delay: -6.66s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  animation-direction: alternate;
+  animation-direction: alternate-reverse;
 }
 
 @keyframes default-zoom {
