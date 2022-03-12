@@ -257,6 +257,10 @@ footer ul {
   filter: drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
 }
 
+footer a {
+  color:#B86D41
+}
+
 .featured-projects {
   text-align: center;
 }
