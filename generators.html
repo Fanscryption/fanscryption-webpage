@@ -66,9 +66,8 @@
     <article class=generator>
       <img class=generator-image src=>
       <div class=meta>
-        <h2 class=title></h2>
+        <a class=link href=><h2 class=title></h2></a>
         <p class=author></p>
-        <p><a class=link href=>Link</a></p>
       </div>
     </article>
   </template>
@@ -86,8 +85,8 @@
       const p = template.content.cloneNode(true)
 
       p.querySelector('h2.title').textContent = d.title
-      p.querySelector('p.author').textContent = '@ ' + d.author
       p.querySelector('a.link').href = d.link
+      p.querySelector('p.author').textContent = '@ ' + d.author
       p.querySelector('img.generator-image').src = d.image
 
       projects.appendChild(p)
