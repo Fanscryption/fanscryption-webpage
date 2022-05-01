@@ -38,7 +38,7 @@
       margin: initial;
     }
 
-    article.generator>img {
+    article.generator>a>img {
       width: 200px;
       height: 200px;
       object-fit: cover;
@@ -51,7 +51,8 @@
         font-size: 70%;
       }
 
-      article.generator>img {
+      article.generator>a>img {
+        max-width: inherit;
         width: 100px;
         height: 100px;
       }
@@ -64,7 +65,9 @@
   <h1>Community generators</h1>
   <template id=generator>
     <article class=generator>
-      <img class=generator-image alt="" src=>
+      <a class=generator-image-link>
+        <img class=generator-image alt= src=>
+      </a>
       <div class=meta>
         <a class=link href=><h2 class=title></h2></a>
         <p class=author></p>
@@ -87,7 +90,9 @@
       p.querySelector('h2.title').textContent = d.title
       p.querySelector('a.link').href = d.link
       p.querySelector('p.author').textContent = '@ ' + d.author
+      p.querySelector('a.generator-image-link').href = d.link
       p.querySelector('img.generator-image').src = d.image
+      p.querySelector('img.generator-image').alt = d.title
 
       projects.appendChild(p)
     }
