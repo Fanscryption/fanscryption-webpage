@@ -47,6 +47,10 @@ h2 {
   font-weight: normal;
 }
 
+a {
+  color: orange;
+}
+
 main {
   display: flex;
   align-items: center;
