@@ -15,7 +15,7 @@ body {
   background-position-x: center;
   background-repeat: repeat;
   font-size: 200%;
-  font-family: 'Marksman';
+  font-family: "Marksman";
 }
 
 #page-shadow {
@@ -61,7 +61,7 @@ main {
   overflow: hidden;
 }
 
-main>section {
+main > section {
   width: 100%;
 }
 
@@ -75,7 +75,9 @@ nav ul {
   background: #020a11;
   border: 4px dashed #9e2630;
 
-  filter: drop-shadow(1px 2px 8px hsl(220deg 60% 20% / 0.3)) drop-shadow(2px 4px 16px hsl(220deg 60% 20% / 0.3)) drop-shadow(4px 8px 32px hsl(220deg 60% 20% / 0.3));
+  filter: drop-shadow(1px 2px 8px hsl(220deg 60% 20% / 0.3))
+    drop-shadow(2px 4px 16px hsl(220deg 60% 20% / 0.3))
+    drop-shadow(4px 8px 32px hsl(220deg 60% 20% / 0.3));
 }
 
 nav ul li {
@@ -154,24 +156,23 @@ nav ul a {
   justify-content: center;
 }
 
-
 @keyframes spin-clockwise {
   from {
-    transform: rotate(0deg) scale(0.7)
+    transform: rotate(0deg) scale(0.7);
   }
 
   to {
-    transform: rotate(360deg) scale(0.7)
+    transform: rotate(360deg) scale(0.7);
   }
 }
 
 @keyframes floating {
   from {
-    transform: translate(0, 0)
+    transform: translate(0, 0);
   }
 
   to {
-    transform: translate(0, -5%)
+    transform: translate(0, -5%);
   }
 }
 
@@ -183,7 +184,7 @@ nav {
 
 @keyframes nav-zoom {
   from {
-    transform: scale(0.8)
+    transform: scale(0.8);
   }
 
   to {
@@ -202,7 +203,7 @@ nav {
   z-index: -1;
 }
 
-.hands>img {
+.hands > img {
   animation-name: hands-wobble;
   animation-duration: 5s;
   animation-delay: 2s;
@@ -250,18 +251,19 @@ footer {
 
 footer ul {
   width: 60%;
-  filter: drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
+  filter: drop-shadow(0 0 1rem rgb(30, 15, 10))
+    drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
 }
 
 footer a {
-  color:#B86D41
+  color: #b86d41;
 }
 
 .featured-projects {
   text-align: center;
 }
 
-.featured-projects>a {
+.featured-projects > a {
   display: inline-flex;
   flex-flow: column;
   justify-content: center;
@@ -273,11 +275,11 @@ footer a {
   color: white;
 }
 
-.featured-projects>a>.image-wrapper {
+.featured-projects > a > .image-wrapper {
   height: 190px;
 }
 
-.featured-projects>a>.image-wrapper>img {
+.featured-projects > a > .image-wrapper > img {
   max-width: none;
   height: 100%;
 }
@@ -293,7 +295,6 @@ footer a {
 }
 
 @media screen and (max-width: 1100px) {
-
   #cobweb {
     height: 20vmin;
   }
