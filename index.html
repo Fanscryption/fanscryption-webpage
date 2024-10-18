@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inscryption IRL</title>
     <link rel="stylesheet" href="style.css?v=generators" />
+
+    <style>
+      #rose-parent {
+        text-align: center;
+      }
+
+      #rose {
+        display: inline-block;
+      }
+
+      #rose > img {
+        display: inline-block;
+        height: 150px;
+      }
+
+      #rose > img[alt="gear"] {
+        display: none;
+      }
+
+      #rose:hover > img[alt="rose"] {
+        display: none;
+      }
+
+      #rose:hover > img[alt="gear"] {
+        display: inline-block;
+      }
+    </style>
   </head>
 
   <body>
@@ -95,6 +122,30 @@
           </div>
         </div>
       </div>
+
+      <section id="rose-parent">
+        <div id="rose">
+          <img alt="rose" src="./public/secret/rose.png" />
+          <img alt="gear" src="./public/secret/gear.png" />
+        </div>
+      </section>
+      <script>
+        // on click #rose, create an absolute top-left span with the text "7" once
+        // must only happen once
+        const rose = document.getElementById("rose");
+        const onclick = () => {
+          const span = document.createElement("span");
+          span.style.position = "absolute";
+          span.style.top = "0";
+          span.style.left = "0";
+          span.style.opacity = "0.3";
+          span.textContent = "7";
+          document.body.prepend(span);
+        };
+
+        // only trigger onclick once
+        rose.addEventListener("click", onclick, { once: true });
+      </script>
 
       <section>
         <h2>About us</h2>
