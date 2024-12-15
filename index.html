@@ -1,21 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inscryption IRL</title>
+    <title>Fanscryption</title>
     <link rel="stylesheet" href="style.css?v=generators" />
   </head>
 
   <body>
     <img id="page-shadow" src="./public/shadow.png" alt="" aria-hidden="true" />
-    <img
-      id="cobweb"
-      src="./public/leshy/cobweb.png"
-      alt="cobweb"
-      aria-hidden="true"
-    />
+    <img id="cobweb" src="./public/leshy/cobweb.png" alt="cobweb" aria-hidden="true" />
 
     <header>
       <img src="./public/title.png" alt="fanscryption" />
@@ -23,75 +18,40 @@
     <main>
       <div id="leshy">
         <div id="eyes">
-          <img
-            class="eye left"
-            src="./public/leshy/left_eye.png"
-            alt="left eye"
-            aria-hidden="true"
-          />
-          <img
-            class="eye right"
-            src="./public/leshy/right_eye.png"
-            alt="right eye"
-            aria-hidden="true"
-          />
+          <img class="eye left" src="./public/leshy/left_eye.png" alt="left eye" aria-hidden="true" />
+          <img class="eye right" src="./public/leshy/right_eye.png" alt="right eye" aria-hidden="true" />
         </div>
         <div id="foo">
           <nav>
             <ul>
               <li class="floating">
-                <a
-                  href="https://www.youtube.com/channel/UCZ_z2divYXa1-lSkzjvbTkA"
-                >
-                  <img
-                    class="pixel-icon"
-                    src="./public/icons/skulls/youtube.png"
-                    alt="youtube"
-                    aria-hidden="true"
-                  />
+                <a href="https://www.youtube.com/channel/UCZ_z2divYXa1-lSkzjvbTkA">
+                  <img class="pixel-icon" src="./public/icons/skulls/youtube.png" alt="youtube" aria-hidden="true" />
                   <span>youtube</span>
                 </a>
               </li>
               <li class="floating">
                 <a href="https://discord.gg/rx5bajNq">
-                  <img
-                    class="pixel-icon"
-                    src="./public/icons/skulls/discord.png"
-                    alt="discord"
-                    aria-hidden="true"
-                  />
+                  <img class="pixel-icon" src="./public/icons/skulls/discord.png" alt="discord" aria-hidden="true" />
                   <span>discord</span>
                 </a>
               </li>
               <li class="floating">
                 <a href="https://www.twitch.tv/leshyirl">
-                  <img
-                    class="pixel-icon"
-                    src="./public/icons/skulls/twitch.png"
-                    alt="twitch"
-                    aria-hidden="true"
-                  />
+                  <img class="pixel-icon" src="./public/icons/skulls/twitch.png" alt="twitch" aria-hidden="true" />
                   <span>twitch</span>
                 </a>
               </li>
               <li class="floating">
                 <a href="https://www.patreon.com/leshyirl">
-                  <img
-                    class="pixel-icon"
-                    src="./public/icons/skulls/patreon.png"
-                    alt="patreon"
-                    aria-hidden="true"
-                  />
+                  <img class="pixel-icon" src="./public/icons/skulls/patreon.png" alt="patreon" aria-hidden="true" />
                   <span>patreon</span>
                 </a>
               </li>
             </ul>
           </nav>
           <div class="hands">
-            <img
-              src="./public/leshy/hands.png"
-              alt="Leshy reaching out from the shadows to grab you"
-            />
+            <img src="./public/leshy/hands.png" alt="Leshy reaching out from the shadows to grab you" />
           </div>
         </div>
       </div>
@@ -103,46 +63,26 @@
         </div>
       </section>
       <script>
-        // on click #rose, create an absolute top-left span with the text "7" once
-        // must only happen once
-        const rose = document.getElementById("rose");
+        const rose = document.getElementById('rose')
         const onclick = () => {
-          const span = document.createElement("span");
-          span.style.position = "absolute";
-          span.style.top = "0";
-          span.style.left = "0";
-          span.style.opacity = "0.3";
-          span.textContent = "7";
-          document.body.prepend(span);
-        };
+          const span = document.createElement('span')
+          span.style.position = 'absolute'
+          span.style.top = '0'
+          span.style.left = '0'
+          span.style.opacity = '0.3'
+          span.textContent = '7'
+          document.body.prepend(span)
+        }
 
-        // only trigger onclick once
-        rose.addEventListener("click", onclick, { once: true });
+        rose.addEventListener('click', onclick, { once: true })
       </script>
 
       <section>
         <h2>About us</h2>
         <p>Welcome… to Fanscryption.</p>
-        <p>
-          We are a community of artists and fans of Inscryption alike who come
-          together to bring our love of the game into the real world. The 2021
-          game Inscryption by Daniel Mullins struck a chord with a lot of
-          people, and it has inspired a countless number of amazing artistic
-          projects.
-        </p>
-        <p>
-          It started as a small group of artists who wanted to make a physical
-          recreation of Inscryption. However, we have grown into a large
-          community of physical Inscryption artists, custom card designers,
-          cosplayers, and more. We are dedicated to bringing the compelling
-          themes and story of Inscryption into the real world through our
-          various projects.
-        </p>
-        <p>
-          Come join our discord and other socials to see some of the astounding
-          work our community has produced. Also take a look at our featured
-          projects below! We hope you enjoy…
-        </p>
+        <p>We are a community of artists and fans of Inscryption alike who come together to bring our love of the game into the real world. The 2021 game Inscryption by Daniel Mullins struck a chord with a lot of people, and it has inspired a countless number of amazing artistic projects.</p>
+        <p>It started as a small group of artists who wanted to make a physical recreation of Inscryption. However, we have grown into a large community of physical Inscryption artists, custom card designers, cosplayers, and more. We are dedicated to bringing the compelling themes and story of Inscryption into the real world through our various projects.</p>
+        <p>Come join our discord and other socials to see some of the astounding work our community has produced. Also take a look at our featured projects below! We hope you enjoy…</p>
       </section>
 
       <section class="generators">
@@ -166,44 +106,32 @@
         </template>
 
         <script>
-          const projects = document.getElementById("js-featured-projects");
-          const template = document.getElementById("project");
+          const projects = document.getElementById('js-featured-projects')
+          const template = document.getElementById('project')
 
           const data = [
-            { author: "Annex", image: "./public/gallery/Annex.jpg" },
-            {
-              author: "Brazilian Scrybe of Arroz",
-              image: "./public/gallery/Brazilian Scrybe of Arroz.jpg",
-            },
-            { author: "GlyphGryph", image: "./public/gallery/GlyphGryph.jpg" },
-            { author: "LeshyIRL", image: "./public/gallery/LeshyIRL.jpg" },
-            { author: "MoxTheCat", image: "./public/gallery/MoxTheCat.jpg" },
-            {
-              author: "Pixel Profilgate",
-              image: "./public/gallery/Pixel Profligate.png",
-            },
-            { author: "TFV", image: "./public/gallery/TFV.jpg" },
-            { author: "Ritbulau", image: "./public/gallery/Ritbulau.png" },
-            { author: "Ultradrive", image: "./public/gallery/Ultradrive.png" },
-            {
-              author: "Your Average Capitalist",
-              image: "./public/gallery/YourAverageCapitalist.jpeg",
-            },
-            {
-              author: "(various artists)",
-              image: "./public/gallery/cardcontestsorry.png",
-            },
-            { author: "Goobert", image: "./public/gallery/goobert.jpg" },
-          ].sort((a, b) => a.author.localeCompare(b.author));
+            { author: 'Annex', image: './public/gallery/Annex.jpg' },
+            { author: 'Brazilian Scrybe of Arroz', image: './public/gallery/Brazilian Scrybe of Arroz.jpg' },
+            { author: 'GlyphGryph', image: './public/gallery/GlyphGryph.jpg' },
+            { author: 'LeshyIRL', image: './public/gallery/LeshyIRL.jpg' },
+            { author: 'MoxTheCat', image: './public/gallery/MoxTheCat.jpg' },
+            { author: 'Pixel Profilgate', image: './public/gallery/Pixel Profligate.png' },
+            { author: 'TFV', image: './public/gallery/TFV.jpg' },
+            { author: 'Ritbulau', image: './public/gallery/Ritbulau.png' },
+            { author: 'Ultradrive', image: './public/gallery/Ultradrive.png' },
+            { author: 'Your Average Capitalist', image: './public/gallery/YourAverageCapitalist.jpeg' },
+            { author: '(various artists)', image: './public/gallery/cardcontestsorry.png' },
+            { author: 'Goobert', image: './public/gallery/goobert.jpg' },
+          ].sort((a, b) => a.author.localeCompare(b.author))
 
           for (const d of data) {
-            const p = template.content.cloneNode(true);
+            const p = template.content.cloneNode(true)
 
-            p.querySelector("span.author").textContent = d.author;
-            p.querySelector("div.image-wrapper>img").src = d.image;
-            p.querySelector("a.project").href = d.image;
+            p.querySelector('span.author').textContent = d.author
+            p.querySelector('div.image-wrapper>img').src = d.image
+            p.querySelector('a.project').href = d.image
 
-            projects.appendChild(p);
+            projects.appendChild(p)
           }
         </script>
       </section>

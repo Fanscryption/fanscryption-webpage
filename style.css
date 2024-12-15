@@ -75,9 +75,7 @@ nav ul {
   background: #020a11;
   border: 4px dashed #9e2630;
 
-  filter: drop-shadow(1px 2px 8px hsl(220deg 60% 20% / 0.3))
-    drop-shadow(2px 4px 16px hsl(220deg 60% 20% / 0.3))
-    drop-shadow(4px 8px 32px hsl(220deg 60% 20% / 0.3));
+  filter: drop-shadow(1px 2px 8px hsl(220deg 60% 20% / 0.3)) drop-shadow(2px 4px 16px hsl(220deg 60% 20% / 0.3)) drop-shadow(4px 8px 32px hsl(220deg 60% 20% / 0.3));
 }
 
 nav ul li {
@@ -251,8 +249,7 @@ footer {
 
 footer ul {
   width: 60%;
-  filter: drop-shadow(0 0 1rem rgb(30, 15, 10))
-    drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
+  filter: drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10)) drop-shadow(0 0 1rem rgb(30, 15, 10));
 }
 
 footer a {
@@ -362,6 +359,7 @@ footer a {
 }
 
 @media (prefers-reduced-motion) {
+
   #eyes,
   nav,
   .hands,
