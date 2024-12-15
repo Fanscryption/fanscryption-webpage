@@ -294,6 +294,31 @@ footer a {
   align-items: center;
 }
 
+#rose-parent {
+  text-align: center;
+}
+
+#rose {
+  display: inline-block;
+}
+
+#rose > img {
+  display: inline-block;
+  height: 150px;
+}
+
+#rose > img[alt="gear"] {
+  display: none;
+}
+
+#rose:hover > img[alt="rose"] {
+  display: none;
+}
+
+#rose:hover > img[alt="gear"] {
+  display: inline-block;
+}
+
 @media screen and (max-width: 1100px) {
   #cobweb {
     height: 20vmin;
