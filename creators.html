@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8>
+    <meta content='width=device-width, initial-scale=1' name=viewport>
+    <title>Content creators</title>
+    <link href="./reset.css" rel=stylesheet>
+    <link href="./style.css" rel=stylesheet>
+
+    <style>
+
+      h1 {
+        font-size: min(5em, 13vw);
+      }
+
+      main {
+        max-width: 120ch;
+      }
+
+      #creators {
+        display: grid;
+        gap: 1em;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #creator-intro {
+        max-width: 80ch;
+        margin: 2em auto;
+        padding-inline: 0.5em;
+      }
+
+      .creator {
+        --spacing: 2em;
+        display: flex;
+        padding: var(--spacing);
+        gap: var(--spacing);
+
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: #eee;
+        background: #5334;
+
+        min-height: 200px;
+
+        & * {
+          margin: 0;
+        }
+
+        & h2 {
+          letter-spacing: 0;
+          color: white;
+          font-family: monospace;
+          margin-bottom: 0.2em;
+        }
+
+        & img {
+          background: gray;
+          border-radius: 50%;
+          height: 100px;
+          width: 100px;
+          image-rendering: pixelated;
+        }
+
+        & ul {
+          display: flex;
+          gap: calc(var(--spacing) / 2);
+          list-style-type: none;
+          padding: 0;
+          margin: 0 0 0.4em;
+        }
+
+        & a {
+          color: wheat;
+
+          &:visited {
+            color: darksalmon;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <a href='/index.html'>Home</a>
+      <h1>Content creators</h1>
+    </header>
+
+    <main>
+      <div id=creator-intro>
+        <p>Our community is filled with creators, all contributing in their own ways.</p>
+      </div>
+      <section id=creators></section>
+    </main>
+
+    <template id=content-creator>
+      <article class=creator>
+        <img alt="" src="" height=100 width=100>
+        <div>
+          <h2 class=name></h2>
+          <ul class=socials></ul>
+          <p class=description></p>
+        </div>
+      </article>
+    </template>
+    <script>
+
+      /**
+       * @param {string} site
+       * @param {string} value
+       */
+      function buildSocialUrl(site, value) {
+        const sites = {
+          youtube: 'https://youtube.com/',
+          bluesky: 'https://bsky.app/profile/',
+          tumblr: 'https://tumblr.com/',
+        }
+
+        let url = sites[site]
+        if (!value.startsWith('@')) {
+          value = `c/${value}`
+        }
+
+        return url + value
+      }
+
+      const creators = [
+        {
+          id: 'vladde',
+          name: 'vladde',
+          image: 'vladde.jpg',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.',
+          socials: {
+            youtube: 'vladde',
+            bluesky: 'vladde.net',
+          },
+        },
+        {
+          id: 'leshyirl',
+          name: 'Leshy IRL',
+          image: 'LeshyIRL.jpg',
+          description: 'Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
+          socials: {},
+        },
+        {
+          id: 'pixelprofligate',
+          name: 'Pixel Profligate',
+          image: 'Pixel Profligate.jpg',
+          description: 'Aenean vel massa quis mauris vehicula lacinia. Maecenas sollicitudin. Ut varius tincidunt libero.',
+          socials: {
+            tumblr: 'pixelprofligate',
+          },
+        },
+      ]
+
+      const template = document.getElementById('content-creator')
+      const creatorsSection = document.getElementById('creators')
+
+      creators.forEach(creator => {
+        const clone = template.content.cloneNode(true)
+
+        const article = clone.querySelector('article')
+        article.id = creator.id
+
+        const picture = clone.querySelector('img')
+        const name = clone.querySelector('.name')
+        const description = clone.querySelector('.description')
+        const socials = clone.querySelector('.socials')
+
+        picture.src = `/public/creators/${creator.image}`
+        name.textContent = creator.name
+        description.textContent = creator.description
+
+        for (const [site, value] of Object.entries(creator.socials)) {
+          const url = buildSocialUrl(site, value)
+          const li = document.createElement('li')
+          const a = document.createElement('a')
+          a.href = url
+          a.textContent = site
+          li.appendChild(a)
+          socials.appendChild(li)
+        }
+
+        creatorsSection.appendChild(clone)
+      })
+    </script>
+  </body>
+</html>

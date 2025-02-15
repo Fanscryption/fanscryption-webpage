@@ -1,0 +1,46 @@
+html {
+  font-size: 112%;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  font-kerning: normal;
+}
+
+p {
+  text-wrap: pretty;
+  margin: 0 auto;
+}
+
+p + p {
+  text-indent: 1em;
+}
+
+ul, ol {
+  padding-left: 0;
+  list-style-position: outside;
+}
