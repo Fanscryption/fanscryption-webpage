@@ -6,18 +6,347 @@
 
     {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+    <style>
+      :root {
+        --inscryption-orange: #ed7023;
+        --inscryption-kcm-red: rgb(158, 38, 48);
+        --inscryption-kcm-background: rgb(2, 10, 17);
+      }
+
+      @keyframes eye {
+        from {
+          rotate: 0;
+        }
+
+        to {
+          rotate: -1turn;
+        }
+      }
+
+      @keyframes breathe {
+        from {
+          translate: 0 0;
+        }
+
+        to {
+          translate: 0 10px;
+        }
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-image: url('/assets/index/leather.jpg');
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20vw;
+        height: 240px;
+        background-image: url('/assets/index/cobweb.png');
+        background-size: contain;
+        background-position: top right;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
+
+      header {
+        max-width: unset;
+      }
+
+      main {
+        font-size: 1.2em;
+        max-width: 60ch;
+        margin-inline: 1em;
+      }
+
+      p {
+        font-family: Lexend, sans-serif;
+        letter-spacing: -0.04em;
+      }
+
+      #leshy {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: clip;
+
+        & [data-leshy=eyes] {
+          display: flex;
+          gap: 100px;
+          filter: drop-shadow(0 0 150px red) drop-shadow(0 0 50px orange) drop-shadow(0 0 10px red);
+          user-select: none;
+
+          & img {
+            height: 80px;
+            width: auto;
+            animation-name: eye;
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+
+            &[alt=r] {
+              transform: scaleX(-1);
+              animation-direction: reverse;
+              animation-delay: -0.4s;
+            }
+          }
+        }
+
+        & [data-leshy=hands] {
+          pointer-events: none;
+          position: relative;
+          width: 900px;
+          height: 100px;
+          user-select: none;
+
+          & img {
+            position: absolute;
+            top: 90px;
+          }
+
+          & img:nth-child(2) {
+            z-index: 100;
+          }
+        }
+      }
+
+      ul.cards {
+        list-style: none;
+        padding: 0;
+        display: flex;
+
+        & img {
+          height: 250px;
+          width: 170px;
+          max-width: unset;
+          object-fit: contain;
+          transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+          margin-inline: -10px;
+          filter: drop-shadow(0 10px 12px rgba(33, 23, 14, 1));
+        }
+
+        & li {
+          animation-name: breathe;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+          animation-timing-function: ease-in-out;
+        }
+
+        & li:hover {
+          z-index: 10;
+          animation: none;
+
+          & img {
+            translate: 0 -2em;
+          }
+        }
+
+        & li:nth-child(1) {
+          transform-origin: center 120%;
+          rotate: -5deg;
+          animation-delay: -0s;
+        }
+
+        & li:nth-child(2) {
+          transform-origin: center 120%;
+          rotate: -2deg;
+          animation-delay: -0.4s;
+        }
+
+        & li:nth-child(3) {
+          transform-origin: center 120%;
+          rotate: 2deg;
+          animation-delay: -0.8s;
+        }
+
+        & li:nth-child(4) {
+          transform-origin: center 120%;
+          rotate: 5deg;
+          animation-delay: -1.2s;
+        }
+      }
+
+      h1 {
+        font-size: min(7em, 16vw);
+        font-family: Heavyweight, sans-serif;
+        font-weight: normal;
+        color: var(--inscryption-orange);
+        text-shadow: 0 8px 0.5em #ff761033, 0 14px 0.5em #ff761033;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 2em;
+        font-family: Lexend, sans-serif;
+        line-height: 1;
+        margin-block: 1.5em 0.5em;
+      }
+
+      footer[data-style=leshy] {
+        height: 300px;
+        margin-block-start: 5em;
+
+        background-image: url('/assets/index/table.png');
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        align-self: stretch;
+      }
+
+      footer {
+        padding-top: 2em;
+      }
+
+      footer > ul {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      #socials {
+        list-style: none;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+
+
+        justify-content: space-between;
+        gap: 1em;
+        background-color: var(--inscryption-kcm-background);
+        padding: 10px;
+        border-width: 4px;
+        border-style: dashed;
+        border-color: var(--inscryption-kcm-red);
+
+        & > li {
+          aspect-ratio: 1;
+          text-align: center;
+
+          font-family: Marksman, monospace;
+          font-size: 1.2em;
+          padding: 12px;
+
+          &:hover {
+            background: #eef4c6;
+          }
+
+          & img {
+            width: 70%;
+            margin: 0 auto;
+            image-rendering: pixelated;
+          }
+
+          & a {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            text-decoration: none;
+            color: var(--inscryption-kcm-red);
+            line-height: 10px;
+          }
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Fanscryption</h1>
+    <header>
+      <h1>Fanscryption</h1>
+      <div id=leshy>
+        <div data-leshy=eyes aria-hidden=true>
+          <img alt='l' src=/assets/index/eye.png>
+          <img alt='r' src=/assets/index/eye.png>
+        </div>
 
-    <nav>
-      <ul>
-        {{/*<li><a href="/">Home</a></li>*/}}
-        <li><a href="/3d-physical">Physical / 3D</a></li>
-        <li><a href="/2d-fanart">2D Fanart</a></li>
-        <li><a href="/creators">Content Creators</a></li>
-        <li><a>Custom Cards</a></li>
+        <div data-leshy=hands>
+          <img alt='' src='/assets/index/hands.png' />
+          <img alt='' src='/assets/index/hands-overlay.png' />
+        </div>
+
+        <nav>
+          <ul class=cards>
+            <li>
+              <a href='/3d-physical'>
+                <img alt='Physical / 3D' src=/assets/index/cards/physical-3d.png />
+              </a>
+            </li>
+            <li>
+              <a href='/2d-fanart'>
+                <img alt='2D fan-art' src=/assets/index/cards/2d-fanart.png />
+              </a>
+            </li>
+            <li>
+              <a>
+                <img alt='Custom cards' src=/assets/index/cards/custom-cards.png />
+              </a>
+            </li>
+            <li>
+              <a href='/creators'>
+                <img alt='Content creators' src=/assets/index/cards/content-creators.png />
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      {{/*<nav>*/}}
+      {{/*  <ul>*/}}
+      {{/*    */}}{{/*<li><a href="/">Home</a></li>*/}}
+      {{/*    <li><a href="/3d-physical">Physical / 3D</a></li>*/}}
+      {{/*    <li><a href="/2d-fanart">2D Fanart</a></li>*/}}
+      {{/*    <li><a href="/creators">Content Creators</a></li>*/}}
+      {{/*    <li><a>Custom Cards</a></li>*/}}
+      {{/*  </ul>*/}}
+      {{/*</nav>*/}}
+    </header>
+    <main>
+      <h2>About us</h2>
+      <p>Welcome… to Fanscryption.</p>
+      <p>We are a community of artists and fans of Inscryption alike who come together to bring our love of the game into the real world. The 2021 game Inscryption by Daniel Mullins struck a chord with a lot of people, and it has inspired a countless number of amazing artistic projects.</p>
+      <p>It started as a small group of artists who wanted to make a physical recreation of Inscryption. However, we have grown into a large community of physical Inscryption artists, custom card designers, cosplayers, and more. We are dedicated to bringing the compelling themes and story of Inscryption into the real world through our various projects.</p>
+      <p>Come join our discord and other socials to see some of the astounding work our community has produced. We hope you enjoy…</p>
+
+      <h2>Socials</h2>
+      <ul id=socials>
+        <li>
+          <a href="https://www.youtube.com/channel/UCZ_z2divYXa1-lSkzjvbTkA">
+            <img src="/assets/index/icons/skulls/youtube.png" alt="youtube" aria-hidden="true" />
+            <span>youtube</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://discord.gg/wjQh9uSdpk" title="Fanscryption Discord">
+            <img src="/assets/index/icons/skulls/discord.png" alt="discord" aria-hidden="true" />
+            <span>our discord</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://discordapp.com/invite/danielmullinsgames" title="Daniel Mullins Games Discord">
+            <img src="/assets/index/icons/skulls/discord.png" alt="discord" aria-hidden="true" />
+            <span>DMG discord</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.twitch.tv/leshyirl">
+            <img src="/assets/index/icons/skulls/twitch.png" alt="twitch" aria-hidden="true" />
+            <span>twitch</span>
+          </a>
+        </li>
       </ul>
-    </nav>
+    </main>
+
+    <footer data-style=leshy>
+      <ul>
+        <li>leshy & background art: @gab3arts</li>
+      </ul>
+    </footer>
+
   </body>
 </html>
