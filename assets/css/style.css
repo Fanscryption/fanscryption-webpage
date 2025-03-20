@@ -1,10 +1,14 @@
 /* reset */
 html {
   font-size: 112%;
+  font-family: 'Lexend', sans-serif;
+  color: #e1d1c6;
   line-height: 1.5;
-  box-sizing: border-box;
+
   -webkit-font-smoothing: antialiased;
+
   color-scheme: dark;
+  box-sizing: border-box;
 }
 
 *, *::before, *::after {
@@ -51,4 +55,14 @@ ul, ol {
 @font-face {
   font-family: 'Heavyweight';
   src: url('/assets/fonts/Heavyweight.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('/assets/fonts/Lexend.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Winky Sans';
+  src: url('/assets/fonts/Winky Sans.ttf') format('truetype');
 }

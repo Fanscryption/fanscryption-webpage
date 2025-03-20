@@ -7,14 +7,36 @@
 
     {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+    {{ $masonryjs := resources.Get "js/masonry.pkgd.min.js" | resources.Fingerprint }}
+    <script src="{{ $masonryjs.Permalink }}"></script>
+
     <style>
+
+      body {
+        background: url('/assets/index/leather.jpg');
+      }
+
       main, header {
         max-width: 800px;
         margin: auto;
       }
 
+      nav > ul {
+        display: flex;
+        gap: 1em;
+        list-style: none;
+        padding: 1em 0;
+        margin: 0;
+      }
+
+      nav > ul a {
+        color: inherit;
+      }
+
       h1 {
         text-align: center;
+        font-size: 3em;
       }
 
       img {
@@ -27,7 +49,6 @@
         position: relative;
         overflow: hidden;
         border-radius: 8px;
-        /*cursor: pointer;*/
         outline: 1px solid #fc83;
       }
 
@@ -81,6 +102,7 @@
         display: flex;
         align-items: center;
         padding-top: 1em;
+        font-family: Times, sans-serif;
       }
 
       article a {
@@ -96,6 +118,15 @@
       #fanarts > article {
         width: 256px;
         margin-block-end: 16px;
+      }
+
+      @media screen and (max-width: 1000px) {
+        nav > ul {
+          padding-inline: 1em;
+          line-height: 1;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
       }
     </style>
   </head>
@@ -117,28 +148,27 @@
     </header>
     <main>
       {{ $data := dict }}
-      {{ $path := "data/responses.json" }}
-      {{ with resources.Get $path }}
+      {{ $responsesPath := "data/responses.json" }}
+      {{ with resources.Get $responsesPath }}
         {{ with . | transform.Unmarshal }}
           {{ $data = . }}
         {{ end }}
       {{ else }}
-        {{ errorf "2d fanart: could not load %q" $path }}
+        {{ errorf "2d fanart: could not load %q" $responsesPath }}
       {{ end }}
 
       {{ $metadata := dict }}
-      {{ $path := "data/images-metadata.json" }}
-      {{ with resources.Get $path }}
+      {{ $metadataPath := "data/images-metadata.json" }}
+      {{ with resources.Get $metadataPath }}
         {{ with . | transform.Unmarshal }}
           {{ $metadata = . }}
         {{ end }}
       {{ else }}
-        {{ errorf "2d fanart: could not load %q" $path }}
+        {{ errorf "2d fanart: could not load %q" $metadataPath }}
       {{ end }}
 
       {{ $fanarts := where $data "type" "2D Inscryption Fanart" }}
 
-      <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
       <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
         {{ range $index, $elem := $fanarts }}
 
