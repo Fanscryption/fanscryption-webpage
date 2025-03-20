@@ -1,225 +1,225 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Content Creators</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Content Creators</title>
 
-  {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
-  <link rel="stylesheet" href="{{ $style.Permalink }}">
+    {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
-  <style>
+    <style>
 
-    .description {
-      font-family: 'Winky Sans', sans-serif;
+      .description {
+        font-family: 'Winky Sans', sans-serif;
 
-      display: flex;
-      align-items: center;
-      text-align: center;
-    }
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
 
-    main, header {
-      max-width: 1000px;
-      margin: auto;
-    }
+      main, header {
+        max-width: 1000px;
+        margin: auto;
+      }
 
-    nav a {
-      color: #ffaa6e;
-      font-family: 'Heavyweight', sans-serif;
-    }
+      nav a {
+        color: #ffaa6e;
+        font-family: 'Heavyweight', sans-serif;
+      }
 
-    .creators {
-      display: grid;
-      gap: 2em;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .creator {
-      color: black;
-      max-width: 400px;
-      background-image: url('/assets/creators/card_empty.png');
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      image-rendering: pixelated;
-      aspect-ratio: 190 / 125;
-      padding: 1.5em 2em;
-    }
-
-    .creator:nth-child(2n + 1) {
-      justify-self: flex-end;
-    }
-
-    img.profile {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-
-      border: inset 2px #ffdbbe;
-    }
-
-    .name {
-      margin: 0;
-      font-family: Heavyweight, serif;
-      font-weight: normal;
-      font-size: 2em;
-      line-height: 1;
-    }
-
-    .name:has(+ .socials) {
-      margin-top: 0.5em;
-    }
-
-    .socials {
-      display: flex;
-      gap: 0.5em;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .socials a {
-      color: black;
-      font-weight: bold;
-    }
-
-    .contact {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .creator {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-template-rows: auto 1fr;
-      grid-template-areas: "A B" "C C";
-      gap: 1em;
-    }
-
-    .profile {
-      grid-area: A;
-    }
-
-    .contact {
-      grid-area: B;
-    }
-
-    .description {
-      grid-area: C;
-    }
-
-    article:nth-child(5n + 1) {
-      rotate: -0.4deg;
-    }
-
-    article:nth-child(5n + 2) {
-      rotate: 0.45deg;
-    }
-
-    article:nth-child(5n + 3) {
-      rotate: 0.6deg;
-    }
-
-    article:nth-child(5n + 4) {
-      rotate: -0.4deg;
-    }
-
-    article:nth-child(5n + 5) {
-      rotate: 0.5deg;
-    }
-
-    h1 {
-      font-family: 'Heavyweight', sans-serif;
-      font-weight: normal;
-      font-size: min(5em, 13vw);
-      text-align: center;
-      color: #ffaa6e;
-      text-shadow: 0 6px 12px #12100c, 0 3px 6px #12100c;
-    }
-
-    body {
-      background: url('/assets/creators/gametable.jpg');
-      background-size: cover;
-      background-position: top;
-      background-attachment: fixed;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
-      background-size: cover;
-      background-position: top center;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    nav > ul {
-      display: flex;
-      list-style: none;
-      gap: 1em;
-    }
-
-    @media screen and (max-width: 1000px) {
       .creators {
-        grid-template-columns: 1fr;
+        display: grid;
+        gap: 2em;
+        grid-template-columns: 1fr 1fr;
       }
 
-      .creators > article.creator {
-        justify-self: center;
+      .creator {
+        color: black;
+        max-width: 400px;
+        background-image: url('/assets/creators/card_empty.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        image-rendering: pixelated;
+        aspect-ratio: 190 / 125;
+        padding: 1.5em 2em;
       }
-    }
-  </style>
-</head>
-<body>
-<header>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/3d-physical">Physical / 3D</a></li>
-      <li><a href="/2d-fanart">2D Fanart</a></li>
 
-      <li><a href="#">Custom Cards</a></li>
-    </ul>
-  </nav>
-  <h1>{{ .Title }}</h1>
-  {{/*<p>{{ .Content }}</p>*/}}
-</header>
-<main>
-  {{ $data := dict }}
-  {{ $path := "data/creators.json" }}
-  {{ with resources.Get $path }}
-    {{ with . | transform.Unmarshal }}
-      {{ $data = . }}
-    {{ end }}
-  {{ else }}
-    {{ errorf "creators: could not load %q" $path }}
-  {{ end }}
+      .creator:nth-child(2n + 1) {
+        justify-self: flex-end;
+      }
 
-  <section class=creators>
-    {{ range $data }}
-      <article class=creator>
-        <img class=profile alt='' src='{{ .image }}' height=100 width=100>
-        <div class=contact>
-          <h2 class=name>{{ .name }}</h2>
-          {{ if .socials }}
-            <ul class=socials>
-              {{ range $key, $value := .socials }}
-                <li><a href='{{ $value }}'>{{ $key }}</a></li>
+      img.profile {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+
+        border: inset 2px #ffdbbe;
+      }
+
+      .name {
+        margin: 0;
+        font-family: Heavyweight, serif;
+        font-weight: normal;
+        font-size: 2em;
+        line-height: 1;
+      }
+
+      .name:has(+ .socials) {
+        margin-top: 0.5em;
+      }
+
+      .socials {
+        display: flex;
+        gap: 0.5em;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .socials a {
+        color: black;
+        font-weight: bold;
+      }
+
+      .contact {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .creator {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: "A B" "C C";
+        gap: 1em;
+      }
+
+      .profile {
+        grid-area: A;
+      }
+
+      .contact {
+        grid-area: B;
+      }
+
+      .description {
+        grid-area: C;
+      }
+
+      article:nth-child(5n + 1) {
+        rotate: -0.4deg;
+      }
+
+      article:nth-child(5n + 2) {
+        rotate: 0.45deg;
+      }
+
+      article:nth-child(5n + 3) {
+        rotate: 0.6deg;
+      }
+
+      article:nth-child(5n + 4) {
+        rotate: -0.4deg;
+      }
+
+      article:nth-child(5n + 5) {
+        rotate: 0.5deg;
+      }
+
+      h1 {
+        font-family: 'Heavyweight', sans-serif;
+        font-weight: normal;
+        font-size: min(5em, 13vw);
+        text-align: center;
+        color: #ffaa6e;
+        text-shadow: 0 6px 12px #12100c, 0 3px 6px #12100c;
+      }
+
+      body {
+        background: url('/assets/creators/gametable.jpg');
+        background-size: cover;
+        background-position: top;
+        background-attachment: fixed;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+        background-size: cover;
+        background-position: top center;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      nav > ul {
+        display: flex;
+        list-style: none;
+        gap: 1em;
+      }
+
+      @media screen and (max-width: 1000px) {
+        .creators {
+          grid-template-columns: 1fr;
+        }
+
+        .creators > article.creator {
+          justify-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/3d-physical">Physical / 3D</a></li>
+          <li><a href="/2d-fanart">2D Fanart</a></li>
+
+          <li><a href="#">Custom Cards</a></li>
+        </ul>
+      </nav>
+      <h1>{{ .Title }}</h1>
+      {{/*<p>{{ .Content }}</p>*/}}
+    </header>
+    <main>
+      {{ $data := dict }}
+      {{ $path := "data/creators.json" }}
+      {{ with resources.Get $path }}
+        {{ with . | transform.Unmarshal }}
+          {{ $data = . }}
+        {{ end }}
+      {{ else }}
+        {{ errorf "creators: could not load %q" $path }}
+      {{ end }}
+
+      <section class=creators>
+        {{ range $data }}
+          <article class=creator>
+            <img class=profile alt='' src='{{ .image }}' height=100 width=100>
+            <div class=contact>
+              <h2 class=name>{{ .name }}</h2>
+              {{ if .socials }}
+                <ul class=socials>
+                  {{ range $key, $value := .socials }}
+                    <li><a href='{{ $value }}'>{{ $key }}</a></li>
+                  {{ end }}
+                </ul>
               {{ end }}
-            </ul>
-          {{ end }}
-        </div>
-        <p class=description>{{ .description }}</p>
-      </article>
-    {{ end }}
-  </section>
+            </div>
+            <p class=description>{{ .description }}</p>
+          </article>
+        {{ end }}
+      </section>
 
-</main>
-</body>
+    </main>
+  </body>
 </html>

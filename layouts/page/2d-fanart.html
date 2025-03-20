@@ -1,177 +1,165 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>2D Fanart</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2D Fanart</title>
 
-  {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
-  <link rel="stylesheet" href="{{ $style.Permalink }}">
-  <style>
-    main, header {
-      max-width: 800px;
-      margin: auto;
-    }
+    {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+    <style>
+      main, header {
+        max-width: 800px;
+        margin: auto;
+      }
 
-    h1 {
-      text-align: center;
-    }
+      h1 {
+        text-align: center;
+      }
 
-    /*#fanarts {*/
-    /*  display: grid;*/
-    /*  gap: 1em;*/
-    /*  grid-template-columns: 1fr 1fr 1fr;*/
-    /*}*/
+      img {
+        width: 100%;
+        user-select: none;
+        height: auto;
+      }
 
-    /*#fanarts > div {*/
-    /*  display: flex;*/
-    /*  flex-direction: column;*/
-    /*  gap: 1em;*/
-    /*}*/
+      article {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        /*cursor: pointer;*/
+        outline: 1px solid #fc83;
+      }
 
-    img {
-      width: 100%;
-      user-select: none;
-      height: auto;
-    }
+      article::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        transition: 0.2s;
+      }
 
-    article {
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      /*cursor: pointer;*/
-      outline: 1px solid #fc83;
-    }
+      article:hover::after {
+        background: rgba(0, 0, 0, 0.5);
+      }
 
-    article::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-      transition: 0.2s;
-    }
+      article > div {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+        margin: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        opacity: 0;
+        text-align: center;
+        user-select: none;
+        transition: 0.2s;
+        color: white;
+        padding-block: 0;
+        padding-inline: 8px;
+      }
 
-    article:hover::after {
-      background: rgba(0, 0, 0, 0.5);
-    }
+      article:hover > div {
+        opacity: 1;
+        user-select: unset;
+        padding-bottom: 12px;
+      }
 
-    article > div {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
-      align-items: center;
-      margin: 0;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 1;
-      opacity: 0;
-      text-align: center;
-      user-select: none;
-      transition: 0.2s;
-      color: white;
-      padding-block: 0;
-      padding-inline: 8px;
-    }
+      article h2 {
+        line-height: 1;
+        margin: 0;
+        text-wrap: pretty;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding-top: 1em;
+      }
 
-    article:hover > div {
-      opacity: 1;
-      user-select: unset;
-      padding-bottom: 12px;
-    }
+      article a {
+        font-family: Marksman, monospace;
+        font-size: 1.1em;
+        color: wheat;
+      }
 
-    article h2 {
-      line-height: 1;
-      margin: 0;
-      text-wrap: pretty;
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      padding-top: 1em;
-    }
+      article h2, article a {
+        text-shadow: 0 0.2em 1em black;
+      }
 
-    article a {
-      font-family: Marksman, monospace;
-      font-size: 1.1em;
-      color: wheat;
-    }
+      #fanarts > article {
+        width: 256px;
+        margin-block-end: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/3d-physical">Physical / 3D</a></li>
+          <li><a href="/creators">Content Creators</a></li>
+          <li><a href="#">Custom Cards</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    article h2, article a {
-      text-shadow: 0 0.2em 1em black;
-    }
+    <header>
+      <h1>{{ .Title }}</h1>
+      {{/*<p>{{ .Content }}</p>*/}}
+    </header>
+    <main>
+      {{ $data := dict }}
+      {{ $path := "data/responses.json" }}
+      {{ with resources.Get $path }}
+        {{ with . | transform.Unmarshal }}
+          {{ $data = . }}
+        {{ end }}
+      {{ else }}
+        {{ errorf "2d fanart: could not load %q" $path }}
+      {{ end }}
 
-    #fanarts > article {
-      width: 256px;
-      margin-block-end: 16px;
-    }
-  </style>
-</head>
-<body>
-<header>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/3d-physical">Physical / 3D</a></li>
-      <li><a href="/creators">Content Creators</a></li>
-      <li><a href="#">Custom Cards</a></li>
-    </ul>
-  </nav>
-</header>
+      {{ $metadata := dict }}
+      {{ $path := "data/images-metadata.json" }}
+      {{ with resources.Get $path }}
+        {{ with . | transform.Unmarshal }}
+          {{ $metadata = . }}
+        {{ end }}
+      {{ else }}
+        {{ errorf "2d fanart: could not load %q" $path }}
+      {{ end }}
 
-<header>
-  <h1>{{ .Title }}</h1>
-  {{/*<p>{{ .Content }}</p>*/}}
-</header>
-<main>
-  {{ $data := dict }}
-  {{ $path := "data/responses.json" }}
-  {{ with resources.Get $path }}
-    {{ with . | transform.Unmarshal }}
-      {{ $data = . }}
-    {{ end }}
-  {{ else }}
-    {{ errorf "2d fanart: could not load %q" $path }}
-  {{ end }}
+      {{ $fanarts := where $data "type" "2D Inscryption Fanart" }}
 
-  {{ $metadata := dict }}
-  {{ $path := "data/images-metadata.json" }}
-  {{ with resources.Get $path }}
-    {{ with . | transform.Unmarshal }}
-      {{ $metadata = . }}
-    {{ end }}
-  {{ else }}
-    {{ errorf "2d fanart: could not load %q" $path }}
-  {{ end }}
+      <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+      <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
+        {{ range $index, $elem := $fanarts }}
 
-  {{ $fanarts := where $data "type" "2D Inscryption Fanart" }}
+          {{/* get image width */}}
+          {{ $image := index $metadata $elem.primaryImageURL }}
+          {{ $width := $image.imageMediaMetadata.width }}
+          {{ $height := $image.imageMediaMetadata.height }}
 
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-  <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
-    {{ range $index, $elem := $fanarts }}
+          {{ $extension := $image.mimeType }}
+          {{ $extension := replace $extension "image/" "" }}
+          {{ $extension := replace $extension "jpeg" "jpg" }}
 
-      {{/* get image width */}}
-      {{ $image := index $metadata $elem.primaryImageURL }}
-      {{ $width := $image.imageMediaMetadata.width }}
-      {{ $height := $image.imageMediaMetadata.height }}
-
-      {{ $extension := $image.mimeType }}
-      {{ $extension := replace $extension "image/" "" }}
-      {{ $extension := replace $extension "jpeg" "jpg" }}
-
-      <article>
-        <img src="/art/{{ $elem.primaryImageURL }}.{{ $extension }}" alt="" width='{{ $width }}' height='{{ $height }}' />
-        <div>
-          <h2>{{ $elem.title }}</h2>
-          <a {{ if $elem.socials }}href='{{ $elem.socials }}'{{ end }}>{{ $elem.discordUsername }}</a>
-        </div>
-      </article>
-    {{ end }}
-  </section>
-</main>
-</body>
+          <article>
+            <img src="/art/{{ $elem.primaryImageURL }}.{{ $extension }}" alt="" width='{{ $width }}' height='{{ $height }}' />
+            <div>
+              <h2>{{ $elem.title }}</h2>
+              <a {{ if $elem.socials }}href='{{ $elem.socials }}'{{ end }}>{{ $elem.discordUsername }}</a>
+            </div>
+          </article>
+        {{ end }}
+      </section>
+    </main>
+  </body>
 </html>
