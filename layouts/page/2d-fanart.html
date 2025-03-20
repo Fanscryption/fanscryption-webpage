@@ -150,8 +150,6 @@
 
   {{ $fanarts := where $data "type" "2D Inscryption Fanart" }}
 
-  {{/* metadata is a map id -> {title, width, height} */}}
-
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
     {{ range $index, $elem := $fanarts }}

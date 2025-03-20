@@ -14,14 +14,14 @@
     }
 
     body {
-      background-image: url('/3d/background.png');
+      background-image: url('/assets/3d/background.jpg');
       background-size: cover;
       background-attachment: fixed;
       background-position: center;
     }
 
     #table {
-      background-image: url('/3d/table.png');
+      background-image: url('/assets/3d/table.png');
       background-size: 100% auto;
       min-height: 4000px;
     }
@@ -47,7 +47,7 @@
     }
 
     nav li {
-      background-image: url('/3d/rok.png');
+      background-image: url('/assets/3d/rok.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       transition: 0.2s;
@@ -139,7 +139,7 @@
       right: 0;
       bottom: 0;
       transition: 0.2s;
-      background-image: url('/3d/frame.png');
+      background-image: url('/assets/3d/frame.png');
       background-size: 100% auto;
       pointer-events: none;
     }
@@ -211,7 +211,7 @@
         <li><a href="#">Custom Cards</a></li>
       </ul>
     </nav>
-    <img src="/3d/header.png" alt='{{ .Title }}'>
+    <img src="/assets/3d/header.png" alt='{{ .Title }}'>
   </header>
   <main>
 
@@ -225,12 +225,28 @@
       {{ errorf "3d projects: could not load %q" $path }}
     {{ end }}
 
+    {{ $metadata := dict }}
+    {{ $path := "data/images-metadata.json" }}
+    {{ with resources.Get $path }}
+      {{ with . | transform.Unmarshal }}
+        {{ $metadata = . }}
+      {{ end }}
+    {{ else }}
+      {{ errorf "2d fanart: could not load %q" $path }}
+    {{ end }}
+
     {{ $projects := where $data "type" "Physical Inscryption / 3D Artwork" }}
 
     <div class=gallery>
       {{ range $projects }}
+
+        {{ $image := index $metadata .primaryImageURL }}
+        {{ $extension := $image.mimeType }}
+        {{ $extension := replace $extension "image/" "" }}
+        {{ $extension := replace $extension "jpeg" "jpg" }}
+
         <article>
-          <img src='/art/{{ .primaryImageURL }}' alt=''>
+          <img src='/art/{{ .primaryImageURL }}.{{ $extension }}' alt=''>
           <h2>{{ .title }}</h2>
           <span>{{ .discordUsername }}</span>
         </article>

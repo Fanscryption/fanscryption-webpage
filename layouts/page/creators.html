@@ -41,7 +41,7 @@
     .creator {
       color: black;
       max-width: 400px;
-      background-image: url('/assets/card_empty.png');
+      background-image: url('/assets/creators/card_empty.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       image-rendering: pixelated;
@@ -142,7 +142,7 @@
     }
 
     body {
-      background: url('/assets/gametable.png');
+      background: url('/assets/creators/gametable.jpg');
       background-size: cover;
       background-position: top;
       background-attachment: fixed;
@@ -207,11 +207,13 @@
         <img class=profile alt='' src='{{ .image }}' height=100 width=100>
         <div class=contact>
           <h2 class=name>{{ .name }}</h2>
-          <ul class=socials>
-            {{ range $key, $value := .socials }}
-              <li><a href='{{ $value }}'>{{ $key }}</a></li>
-            {{ end }}
-          </ul>
+          {{ if .socials }}
+            <ul class=socials>
+              {{ range $key, $value := .socials }}
+                <li><a href='{{ $value }}'>{{ $key }}</a></li>
+              {{ end }}
+            </ul>
+          {{ end }}
         </div>
         <p class=description>{{ .description }}</p>
       </article>

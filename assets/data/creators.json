@@ -5,14 +5,14 @@
     "description": "Video creator and web developer, made the generator.cards tool (and this website)",
     "socials": {
       "youtube": "https://youtube.com/c/vladde",
-      "generator": "https://generator.cards"
+      "generator": "https://generator.cards",
+      "pdfs": "https://cards.vladde.me"
     }
   },
   {
     "name": "Leshy IRL",
     "image": "/assets/creators/leshyirl.jpg",
-    "description": "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-    "socials": {}
+    "description": "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
   },
   {
     "name": "Pixel Profligate",
