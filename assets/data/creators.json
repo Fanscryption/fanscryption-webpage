@@ -1,0 +1,33 @@
+[
+  {
+    "name": "vladde",
+    "image": "/assets/creators/vladde.jpg",
+    "description": "Video creator and web developer, made the generator.cards tool (and this website)",
+    "socials": {
+      "youtube": "https://youtube.com/c/vladde",
+      "generator": "https://generator.cards"
+    }
+  },
+  {
+    "name": "Leshy IRL",
+    "image": "/assets/creators/leshyirl.jpg",
+    "description": "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+    "socials": {}
+  },
+  {
+    "name": "Pixel Profligate",
+    "image": "/assets/creators/pixelprofligate.jpg",
+    "description": "Aenean vel massa quis mauris vehicula lacinia. Maecenas sollicitudin. Ut varius tincidunt libero.",
+    "socials": {
+      "tumblr": "https://www.tumblr.com/pixelprofligate"
+    }
+  },
+  {
+    "name": "CrypticCrafter",
+    "image": "/assets/creators/nathybathy.png",
+    "description": "A small Australian business making bespoke Inscryption board games",
+    "socials": {
+      "website": "https://crypticcrafter.com/"
+    }
+  }
+]

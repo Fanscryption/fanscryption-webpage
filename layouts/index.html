@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fanscryption</title>
+
+  {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}">
+</head>
+<body>
+<h1>Fanscryption</h1>
+
+<nav>
+  <ul>
+    {{/*<li><a href="/">Home</a></li>*/}}
+    <li><a href="/3d-physical">Physical / 3D</a></li>
+    <li><a href="/2d-fanart">2D Fanart</a></li>
+    <li><a href="/creators">Content Creators</a></li>
+    <li><a>Custom Cards</a></li>
+  </ul>
+</nav>
+</body>
+</html>
