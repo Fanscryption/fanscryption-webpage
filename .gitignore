@@ -1,0 +1,12 @@
+.DS_Store
+.idea
+
+/public
+
+/static/art
+/static/.old_art
+/static/.old_art2
+/static/art.fullrez
+/static/gallery
+/assets/data/responses.json
+/assets/data/images-metadata.json

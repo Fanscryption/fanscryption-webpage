@@ -1,0 +1,16 @@
+{
+  "name": "fetch-csv",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/uuid": "^10.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "googleapis": "^146.0.0",
+    "uuid": "^11.1.0"
+  }
+}
