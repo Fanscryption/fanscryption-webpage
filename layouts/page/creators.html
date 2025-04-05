@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Content Creators</title>
+    <title>Community Contributors</title>
 
     {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
@@ -40,7 +40,7 @@
       .creator {
         color: black;
         max-width: 400px;
-        background-image: url('/assets/creators/card_empty.png');
+        background-image: url('/resources/creators/card_empty.png');
         background-repeat: no-repeat;
         background-size: 100% 100%;
         image-rendering: pixelated;
@@ -144,7 +144,7 @@
       }
 
       body {
-        background: url('/assets/creators/gametable.jpg');
+        background: url('/resources/creators/gametable.jpg');
         background-size: cover;
         background-position: top;
         background-attachment: fixed;

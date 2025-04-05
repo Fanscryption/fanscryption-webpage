@@ -54,15 +54,20 @@ ul, ol {
 
 @font-face {
   font-family: 'Heavyweight';
-  src: url('/assets/fonts/Heavyweight.otf') format('opentype');
+  src: url('/resources/fonts/Heavyweight.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Lexend';
-  src: url('/assets/fonts/Lexend.ttf') format('truetype');
+  src: url('/resources/fonts/Lexend.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Winky Sans';
-  src: url('/assets/fonts/Winky Sans.ttf') format('truetype');
+  src: url('/resources/fonts/Winky Sans.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Marksman';
+  src: url('/resources/fonts/Marksman.woff') format('woff');
 }

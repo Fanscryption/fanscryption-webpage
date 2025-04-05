@@ -1,4 +1,4 @@
 +++
-title = 'Content Creators'
+title = 'Community Contributors'
 layout = 'creators'
 +++
