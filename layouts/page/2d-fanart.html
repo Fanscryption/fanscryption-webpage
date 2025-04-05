@@ -148,44 +148,70 @@
     </header>
     <main>
       {{ $data := dict }}
-      {{ $responsesPath := "data/responses.json" }}
-      {{ with resources.Get $responsesPath }}
-        {{ with . | transform.Unmarshal }}
-          {{ $data = . }}
-        {{ end }}
+      {{ with resources.Get "data/responses.json" | transform.Unmarshal }}
+        {{ $data = . }}
       {{ else }}
-        {{ errorf "2d fanart: could not load %q" $responsesPath }}
+        {{ errorf "2d fanart: could not load responses" }}
       {{ end }}
 
       {{ $metadata := dict }}
-      {{ $metadataPath := "data/images-metadata.json" }}
-      {{ with resources.Get $metadataPath }}
-        {{ with . | transform.Unmarshal }}
-          {{ $metadata = . }}
-        {{ end }}
+      {{ with resources.Get "data/images-metadata.json" | transform.Unmarshal }}
+        {{ $metadata = . }}
       {{ else }}
-        {{ errorf "2d fanart: could not load %q" $metadataPath }}
+        {{ errorf "2d fanart: could not load metadata" }}
       {{ end }}
 
-      {{ $fanarts := where $data "type" "2D Inscryption Fanart" }}
+      {{ $projects := where $data "type" "2D Inscryption Fanart" }}
+      {{ $fanarts := slice }}
+
+      {{ range $index, $submission := $projects }}
+        {{/* get image width */}}
+        {{ $imageMetadata := index $metadata $submission.primaryImageURL }}
+        {{ $width := $imageMetadata.imageMediaMetadata.width }}
+        {{ $height := $imageMetadata.imageMediaMetadata.height }}
+        {{/* get image extension */}}
+        {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
+
+        {{/* add to fanarts */}}
+        {{ $fanarts = $fanarts | append (
+            dict
+                "id" $submission.primaryImageURL
+                "extension" $extension
+                "width" $width
+                "height" $height
+                "title" $submission.title
+                "socials" $submission.socials
+                "discordUsername" $submission.discordUsername
+            )
+        }}
+
+        {{ range $index, $subimage := $submission.additionalImageURLs }}
+          {{ $imageMetadata := index $metadata $subimage }}
+          {{ $width := $imageMetadata.imageMediaMetadata.width }}
+          {{ $height := $imageMetadata.imageMediaMetadata.height }}
+          {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
+
+          {{ $fanarts = $fanarts | append (
+              dict
+                  "id" $subimage
+                  "extension" $extension
+                  "width" $width
+                  "height" $height
+                  "title" $submission.title
+                  "socials" $submission.socials
+                  "discordUsername" $submission.discordUsername
+              )
+          }}
+        {{ end }}
+      {{ end }}
 
       <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
-        {{ range $index, $elem := $fanarts }}
-
-          {{/* get image width */}}
-          {{ $image := index $metadata $elem.primaryImageURL }}
-          {{ $width := $image.imageMediaMetadata.width }}
-          {{ $height := $image.imageMediaMetadata.height }}
-
-          {{ $extension := $image.mimeType }}
-          {{ $extension := replace $extension "image/" "" }}
-          {{ $extension := replace $extension "jpeg" "jpg" }}
-
+        {{ range $index, $artwork := $fanarts }}
           <article>
-            <img src="/art/{{ $elem.primaryImageURL }}.{{ $extension }}" alt="" width='{{ $width }}' height='{{ $height }}' />
+            <img src="/art/{{ $artwork.id }}.{{ $artwork.extension }}" alt="" width='{{ $artwork.width }}' height='{{ $artwork.height }}' />
             <div>
-              <h2>{{ $elem.title }}</h2>
-              <a {{ if $elem.socials }}href='{{ $elem.socials }}'{{ end }}>{{ $elem.discordUsername }}</a>
+              <h2>{{ $artwork.title }}</h2>
+              <a {{ if $artwork.socials }}href='{{ $artwork.socials }}'{{ end }}>{{ $artwork.discordUsername }}</a>
             </div>
           </article>
         {{ end }}

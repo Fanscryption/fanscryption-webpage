@@ -88,7 +88,7 @@ for (const row of rows) {
     const description = row[3];
 
     const primaryImageURL = row[4].replace('https://drive.google.com/open?id=', '');
-    const additionalImageURLs = row[5].split(',').map((url: string) => url.trim().replace('https://drive.google.com/open?id=', ''));
+    const additionalImageURLs = row[5].split(',').map((url: string) => url.trim().replace('https://drive.google.com/open?id=', '')).filter(s => s !== '');
 
     const hasAdditionalImages = row[6] !== 'No, I uploaded all the pictures I had';
 
