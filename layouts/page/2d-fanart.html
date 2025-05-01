@@ -216,6 +216,116 @@
           </article>
         {{ end }}
       </section>
+
+      <style>
+        dialog[open] {
+          max-width: 700px;
+          text-align: center;
+          border: 1px solid black;
+
+          display: flex;
+          flex-direction: column;
+          border-radius: 1em;
+
+          max-height: 1000px;
+          overflow: hidden;
+        }
+
+        dialog img {
+          flex: 1 1 auto;
+          min-height: 0;
+          /*width: 100%;*/
+          object-fit: contain;
+
+          border-radius: 0.4em;
+        }
+
+        dialog .info {
+          flex: 0 0 120px;
+        }
+
+        dialog .credits {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding-block-start: 1em;
+          padding-block-end: 0.5em;
+        }
+
+        dialog .credits > span {
+          font-family: Times, sans-serif;
+          font-size: 1.5em;
+          line-height: 1;
+          margin: 0;
+        }
+
+        dialog::backdrop {
+          opacity: 0.25;
+          /*
+          background-image: linear-gradient(
+              45deg,
+              magenta,
+              rebeccapurple,
+              dodgerblue,
+              green
+          );
+          */
+          background-color: #000;
+        }
+      </style>
+
+      <dialog>
+        <img alt='' class=image>
+        <div class=info>
+          <div class=credits>
+            <span class=title></span>
+            <a class=author></a>
+          </div>
+
+          <form method="dialog">
+            <button>Close</button>
+          </form>
+        </div>
+
+      </dialog>
+
+      <script>
+        const dialog = document.querySelector("dialog");
+        const closeButton = document.querySelector("dialog button");
+
+        closeButton.addEventListener("click", () => {
+          dialog.close();
+        });
+
+        const fanarts = document.querySelectorAll("#fanarts > article");
+        for (const fanart of fanarts) {
+          fanart.addEventListener("click", () => {
+            const sourceImage = fanart.querySelector("img");
+            const sourceTitle = fanart.querySelector("h2");
+            const sourceAuthor = fanart.querySelector("a");
+
+            const image = dialog.querySelector(".image");
+            image.src = sourceImage.src;
+            image.width = sourceImage.getAttribute("width") ?? 0;
+            image.height = sourceImage.getAttribute("height") ?? 0;
+
+            const title = dialog.querySelector(".title");
+            title.textContent = sourceTitle.textContent;
+
+            const author = dialog.querySelector(".author");
+            author.textContent = sourceAuthor.textContent;
+
+            const href = sourceAuthor.getAttribute("href");
+            if (href) {
+              author.href = href
+            }
+
+            dialog.showModal();
+          });
+        }
+
+      </script>
     </main>
   </body>
 </html>
