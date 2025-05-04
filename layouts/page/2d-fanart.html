@@ -321,7 +321,10 @@
               author.href = href
             }
 
-            dialog.showModal();
+            setTimeout(() => {
+              // vladde: hack to make not overlay image flicker on popup
+              dialog.showModal();
+            }, 0);
           });
         }
 
