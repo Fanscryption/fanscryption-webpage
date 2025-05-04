@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Cards</title>
+
+    {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+    {{/*    {{ $masonryjs := resources.Get "js/masonry.pkgd.min.js" | resources.Fingerprint }}*/}}
+    {{/*    <script src="{{ $masonryjs.Permalink }}"></script>*/}}
+
+    <style>
+      body {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      #custom-cards {
+        display: grid;
+        gap: 2em 1em;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      article h2 {
+        margin-block: 0.5em 0.25em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      {{ partial "navigation.html" . }}
+      <h1>{{ .Title }}</h1>
+      {{/*<p>{{ .Content }}</p>*/}}
+    </header>
+    <main>
+      {{ $data := dict }}
+      {{ with resources.Get "data/responses.json" | transform.Unmarshal }}
+        {{ $data = . }}
+      {{ else }}
+        {{ errorf "2d fanart: could not load responses" }}
+      {{ end }}
+
+      {{ $metadata := dict }}
+      {{ with resources.Get "data/images-metadata.json" | transform.Unmarshal }}
+        {{ $metadata = . }}
+      {{ else }}
+        {{ errorf "2d fanart: could not load metadata" }}
+      {{ end }}
+
+      {{ $projects := where $data "type" "Custom Card (or Other Custom Assets)" }}
+      {{ $customCards := slice }}
+
+      {{ range $index, $submission := $projects }}
+        {{/* get image width */}}
+        {{ $imageMetadata := index $metadata $submission.primaryImageURL }}
+        {{ $width := $imageMetadata.imageMediaMetadata.width }}
+        {{ $height := $imageMetadata.imageMediaMetadata.height }}
+        {{/* get image extension */}}
+        {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
+
+        {{/* add to custom cards */}}
+        {{ $customCards = $customCards | append (
+            dict
+                "id" $submission.primaryImageURL
+                "extension" $extension
+                "width" $width
+                "height" $height
+                "title" $submission.title
+                "description" $submission.description
+                "socials" $submission.socials
+                "discordUsername" $submission.discordUsername
+            )
+        }}
+
+        {{ range $index, $subimage := $submission.additionalImageURLs }}
+          {{ $imageMetadata := index $metadata $subimage }}
+          {{ $width := $imageMetadata.imageMediaMetadata.width }}
+          {{ $height := $imageMetadata.imageMediaMetadata.height }}
+          {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
+
+          {{ $customCards = $customCards | append (
+              dict
+                  "id" $subimage
+                  "extension" $extension
+                  "width" $width
+                  "height" $height
+                  "title" $submission.title
+                  "description" $submission.description
+                  "socials" $submission.socials
+                  "discordUsername" $submission.discordUsername
+              )
+          }}
+        {{ end }}
+      {{ end }}
+
+      <section id=custom-cards></section>
+
+      <template id=custom-card-template>
+        <article>
+          <img src="" alt="">
+          <div>
+            <h2></h2>
+            <a></a>
+          </div>
+        </article>
+      </template>
+
+      <script>
+        /** @type {Record<string, {
+         id: string,
+         extension: string,
+         width: number,
+         height: number,
+         title: string,
+         description: string,
+         socials: string,
+         discordUsername: string
+         }>} */
+        const customCards = JSON
+            .parse({{ $customCards | jsonify }})
+            .reduce((acc, art) => {
+                  acc[art.id] = art;
+                  return acc;
+                }, {}
+            );
+
+        function populate() {
+          const template = document.querySelector("#custom-card-template");
+          const customCardsContainer = document.querySelector("#custom-cards");
+
+          function shuffle(input) {
+            /// modified of https://stackoverflow.com/a/12646864
+            const array = [...input]
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array
+          }
+
+          let entries = Object.values(customCards)
+          // entries = shuffle(entries)
+
+          for (const customCard of entries) {
+            const clone = template.content.cloneNode(true);
+
+            const article = clone.querySelector("article");
+            const img = clone.querySelector("img");
+            const h2 = clone.querySelector("h2");
+            const a = clone.querySelector("a");
+
+            article.id = customCard.id
+
+            img.src = `/art/${customCard.id}.${customCard.extension}`
+            img.setAttribute('width', customCard.width)
+            img.setAttribute('height', customCard.height)
+
+            h2.textContent = customCard.title
+            a.textContent = customCard.discordUsername
+
+            let socialLink = customCard.socials
+            if (socialLink) {
+              a.href = socialLink
+            }
+
+            customCardsContainer.append(clone)
+          }
+        }
+
+        populate()
+
+      </script>
+
+      <style>
+        dialog {
+          --total-height: 95svh;
+          --info-height: 200px;
+
+          max-width: min(1000px, 95vw);
+          padding-block-end: 0;
+          border: 1px solid #fff7;
+          background: #332929;
+          background: url('/resources/index/leather.jpg');
+        }
+
+        dialog img {
+          max-height: calc(var(--total-height) - 5svh - var(--info-height));
+          height: 100%;
+          width: auto;
+          margin: auto;
+        }
+
+        dialog > .info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: var(--info-height);
+        }
+
+        dialog .title {
+          display: block;
+          font-size: 1.2em;
+        }
+
+        dialog .description {
+          margin-block-start: 0.5em;
+          font-style: italic;
+          max-height: 100px;
+          overflow-y: scroll;
+          max-width: 50ch;
+        }
+
+        dialog::backdrop {
+          opacity: 0.5;
+          background-color: #000;
+        }
+
+        body:has(dialog[open]) {
+          /* vladde: this is the ugliest hack i've seen this year */
+          filter: blur(4px);
+        }
+      </style>
+
+      <dialog>
+        <img alt='' class=image>
+
+        <div class=info>
+          <div class=credits>
+            <span class=title></span>
+            <a class=author></a>
+            <p class=description></p>
+          </div>
+
+          <form method="dialog">
+            <button>Close</button>
+          </form>
+        </div>
+      </dialog>
+
+      <script>
+        const dialog = document.querySelector("dialog");
+        const closeButton = document.querySelector("dialog button");
+
+        closeButton.addEventListener("click", () => {
+          dialog.close();
+        });
+
+        const fanartElements = document.querySelectorAll("#custom-cards > article");
+        for (const customCardElement of fanartElements) {
+          customCardElement.addEventListener("click", () => {
+            const customCard = customCards[customCardElement.id]
+            if (!customCard) {
+              console.error('no id present for', customCardElement)
+              return
+            }
+
+            const img = dialog.querySelector(".image");
+            img.src = `/art/${customCard.id}.${customCard.extension}`
+            img.setAttribute('width', String(customCard.width))
+            img.setAttribute('height', String(customCard.height))
+
+            const title = dialog.querySelector(".title");
+            title.textContent = customCard.title;
+
+            const author = dialog.querySelector(".author");
+            author.textContent = customCard.discordUsername;
+
+            const description = dialog.querySelector(".description")
+            description.textContent = customCard.description
+
+            const socials = customCard.socials;
+            if (socials) {
+              author.href = socials
+            }
+
+            setTimeout(() => {
+              // vladde: hack to make not overlay image flicker on popup
+              dialog.showModal();
+            }, 0);
+          });
+        }
+
+      </script>
+    </main>
+  </body>
+</html>
