@@ -1,3 +1,30 @@
 baseURL = '/'
 languageCode = 'en-us'
 title = 'Fanscryption'
+
+[menu]
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "Physical / 3D"
+url = "/3d-physical/"
+weight = 2
+
+[[menu.main]]
+name = "2D Fanart"
+url = "/2d-fanart/"
+weight = 3
+
+[[menu.main]]
+name = "Custom Cards"
+url = "/custom-cards/"
+weight = 4
+
+[[menu.main]]
+name = "Community Contributors"
+url = "/creators/"
+weight = 5

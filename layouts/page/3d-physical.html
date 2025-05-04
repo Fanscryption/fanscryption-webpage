@@ -202,15 +202,7 @@
   <body>
     <div id=table>
       <header>
-        <nav>
-          <ul>
-            <li><a href="/">Home</a></li>
-            {{/*<li><a href="/3d-physical">Physical / 3D</a></li>*/}}
-            <li><a href="/2d-fanart">2D Fanart</a></li>
-            <li><a href="/creators">Community Contributors</a></li>
-            <li><a href="#">Custom Cards</a></li>
-          </ul>
-        </nav>
+        {{ partial "navigation.html" . }}
         <img src="/resources/3d/header.png" alt='{{ .Title }}'>
       </header>
       <main>

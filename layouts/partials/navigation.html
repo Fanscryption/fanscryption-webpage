@@ -1,0 +1,12 @@
+<nav>
+  <ul>
+    {{ $here := .RelPermalink }}
+    {{- range .Site.Menus.main }}
+      {{- if ne $here .URL }}
+        <li>
+          <a href="{{ .URL | relURL }}">{{ .Name }}</a>
+        </li>
+      {{- end }}
+    {{- end }}
+  </ul>
+</nav>

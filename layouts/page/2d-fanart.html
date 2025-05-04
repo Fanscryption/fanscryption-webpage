@@ -132,17 +132,7 @@
   </head>
   <body>
     <header>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/3d-physical">Physical / 3D</a></li>
-          <li><a href="/creators">Community Contributors</a></li>
-          <li><a href="#">Custom Cards</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <header>
+      {{ partial "navigation.html" . }}
       <h1>{{ .Title }}</h1>
       {{/*<p>{{ .Content }}</p>*/}}
     </header>
