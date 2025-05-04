@@ -35,68 +35,9 @@
       {{/*<p>{{ .Content }}</p>*/}}
     </header>
     <main>
-      {{ $data := dict }}
-      {{ with resources.Get "data/responses.json" | transform.Unmarshal }}
-        {{ $data = . }}
-      {{ else }}
-        {{ errorf "2d fanart: could not load responses" }}
-      {{ end }}
-
-      {{ $metadata := dict }}
-      {{ with resources.Get "data/images-metadata.json" | transform.Unmarshal }}
-        {{ $metadata = . }}
-      {{ else }}
-        {{ errorf "2d fanart: could not load metadata" }}
-      {{ end }}
-
-      {{ $projects := where $data "type" "Custom Card (or Other Custom Assets)" }}
-      {{ $customCards := slice }}
-
-      {{ range $index, $submission := $projects }}
-        {{/* get image width */}}
-        {{ $imageMetadata := index $metadata $submission.primaryImageURL }}
-        {{ $width := $imageMetadata.imageMediaMetadata.width }}
-        {{ $height := $imageMetadata.imageMediaMetadata.height }}
-        {{/* get image extension */}}
-        {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
-
-        {{/* add to custom cards */}}
-        {{ $customCards = $customCards | append (
-            dict
-                "id" $submission.primaryImageURL
-                "extension" $extension
-                "width" $width
-                "height" $height
-                "title" $submission.title
-                "description" $submission.description
-                "socials" $submission.socials
-                "discordUsername" $submission.discordUsername
-            )
-        }}
-
-        {{ range $index, $subimage := $submission.additionalImageURLs }}
-          {{ $imageMetadata := index $metadata $subimage }}
-          {{ $width := $imageMetadata.imageMediaMetadata.width }}
-          {{ $height := $imageMetadata.imageMediaMetadata.height }}
-          {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
-
-          {{ $customCards = $customCards | append (
-              dict
-                  "id" $subimage
-                  "extension" $extension
-                  "width" $width
-                  "height" $height
-                  "title" $submission.title
-                  "description" $submission.description
-                  "socials" $submission.socials
-                  "discordUsername" $submission.discordUsername
-              )
-          }}
-        {{ end }}
-      {{ end }}
+      {{ $customCards := partial "submissions/load.html" (dict "Type" "Custom Card (or Other Custom Assets)") }}
 
       <section id=custom-cards></section>
-
       <template id=custom-card-template>
         <article>
           <img src="" alt="">

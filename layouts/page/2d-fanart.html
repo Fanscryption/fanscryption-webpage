@@ -137,66 +137,7 @@
       {{/*<p>{{ .Content }}</p>*/}}
     </header>
     <main>
-      {{ $data := dict }}
-      {{ with resources.Get "data/responses.json" | transform.Unmarshal }}
-        {{ $data = . }}
-      {{ else }}
-        {{ errorf "2d fanart: could not load responses" }}
-      {{ end }}
-
-      {{ $metadata := dict }}
-      {{ with resources.Get "data/images-metadata.json" | transform.Unmarshal }}
-        {{ $metadata = . }}
-      {{ else }}
-        {{ errorf "2d fanart: could not load metadata" }}
-      {{ end }}
-
-      {{ $projects := where $data "type" "2D Inscryption Fanart" }}
-      {{ $fanarts := slice }}
-
-      {{ range $index, $submission := $projects }}
-        {{/* get image width */}}
-        {{ $imageMetadata := index $metadata $submission.primaryImageURL }}
-        {{ $width := $imageMetadata.imageMediaMetadata.width }}
-        {{ $height := $imageMetadata.imageMediaMetadata.height }}
-        {{/* get image extension */}}
-        {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
-
-        {{/* add to fanarts */}}
-        {{ $fanarts = $fanarts | append (
-            dict
-                "id" $submission.primaryImageURL
-                "extension" $extension
-                "width" $width
-                "height" $height
-                "title" $submission.title
-                "description" $submission.description
-                "socials" $submission.socials
-                "discordUsername" $submission.discordUsername
-            )
-        }}
-
-        {{ range $index, $subimage := $submission.additionalImageURLs }}
-          {{ $imageMetadata := index $metadata $subimage }}
-          {{ $width := $imageMetadata.imageMediaMetadata.width }}
-          {{ $height := $imageMetadata.imageMediaMetadata.height }}
-          {{ $extension := lower $imageMetadata.mimeType | replaceRE "image/" "" | replaceRE "jpeg" "jpg" }}
-
-          {{ $fanarts = $fanarts | append (
-              dict
-                  "id" $subimage
-                  "extension" $extension
-                  "width" $width
-                  "height" $height
-                  "title" $submission.title
-                  "description" $submission.description
-                  "socials" $submission.socials
-                  "discordUsername" $submission.discordUsername
-              )
-          }}
-        {{ end }}
-      {{ end }}
-
+      {{ $fanarts := partial "submissions/load.html" (dict "Type" "2D Inscryption Fanart") }}
       <section
           id=fanarts
           style="margin: 0 auto;"

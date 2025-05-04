@@ -1,0 +1,54 @@
+{{ $t := .Type }}
+
+{{/* load json */}}
+{{ $data := dict }}
+{{ with resources.Get "data/responses.json" | transform.Unmarshal }}
+  {{ $data = . }}
+{{ else }}
+  {{ errorf "could not load responses" }}
+{{ end }}
+
+{{ $metadata := dict }}
+{{ with resources.Get "data/images-metadata.json" | transform.Unmarshal }}
+  {{ $metadata = . }}
+{{ else }}
+  {{ errorf "could not load metadata" }}
+{{ end }}
+
+{{/* filter out only the type we want */}}
+{{ $projects := where $data "type" $t }}
+{{ $submissions := slice }}
+
+{{/* Build the slice Hugo-style */}}
+{{ range $p := $projects }}
+  {{ $main := index $metadata $p.primaryImageURL }}
+  {{ $submissions = $submissions | append (dict
+      "id" $p.primaryImageURL
+      "extension" (replace (replace (lower $main.mimeType) "image/" "") "jpeg" "jpg")
+      "width" $main.imageMediaMetadata.width
+      "height" $main.imageMediaMetadata.height
+      "title" $p.title
+      "description" $p.description
+      "socials" $p.socials
+      "discordUsername" $p.discordUsername
+      "index" 0
+      ) }}
+
+
+  {{ range $index, $sub := $p.additionalImageURLs }}
+    {{ $meta := index $metadata $sub }}
+    {{ $submissions = $submissions | append (dict
+        "id" $sub
+        "extension" (replace (replace (lower $meta.mimeType) "image/" "") "jpeg" "jpg")
+        "width" $meta.imageMediaMetadata.width
+        "height" $meta.imageMediaMetadata.height
+        "title" $p.title
+        "description" $p.description
+        "socials" $p.socials
+        "discordUsername" $p.discordUsername
+        "index" (add $index 1)
+        ) }}
+  {{ end }}
+{{ end }}
+
+{{ return $submissions }}
