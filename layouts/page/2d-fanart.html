@@ -217,60 +217,49 @@
       </section>
 
       <style>
-        dialog[open] {
-          max-width: 700px;
-          text-align: center;
-          border: 1px solid black;
 
-          display: flex;
-          flex-direction: column;
-          border-radius: 1em;
+        dialog {
+          --total-height: 95svh;
+          --info-height: 100px;
 
-          max-height: 1000px;
-          overflow: hidden;
+          max-width: min(1000px, 95vw);
+          padding-block-end: 0;
+          border: 1px solid #fff7;
+          background: #332929;
+          background: url('/resources/index/leather.jpg');
         }
 
         dialog img {
-          flex: 1 1 auto;
-          min-height: 0;
-          /*width: 100%;*/
-          object-fit: contain;
-
-          border-radius: 0.4em;
+          max-height: calc(var(--total-height) - 5svh - var(--info-height));
         }
 
-        dialog .info {
-          flex: 0 0 120px;
-        }
-
-        dialog .credits {
+        dialog > .info {
           display: flex;
-          flex-direction: column;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-          padding-block-start: 1em;
-          padding-block-end: 0.5em;
+          height: var(--info-height);
         }
 
-        dialog .credits > span {
-          font-family: Times, sans-serif;
-          font-size: 1.5em;
-          line-height: 1;
-          margin: 0;
+        dialog > .info .title {
+          display: block;
+          font-size: 1.2em;
+        }
+
+        dialog > .info > form {
+        }
+
+        dialog > .info > form > button {
+
         }
 
         dialog::backdrop {
-          opacity: 0.25;
-          /*
-          background-image: linear-gradient(
-              45deg,
-              magenta,
-              rebeccapurple,
-              dodgerblue,
-              green
-          );
-          */
+          opacity: 0.5;
           background-color: #000;
+        }
+
+        body:has(dialog[open]) {
+          /* vladde: this is the ugliest hack i've seen this year */
+          filter: blur(4px);
         }
       </style>
 
