@@ -199,7 +199,7 @@
 
             article.id = fanart.id
 
-            img.src = `/art/${fanart.id}.${fanart.extension}`
+            img.src = fanart.imageURL
             img.setAttribute('width', fanart.width)
             img.setAttribute('height', fanart.height)
 
@@ -290,7 +290,7 @@
             }
 
             const img = dialog.querySelector(".image");
-            img.src = `/art/${fanart.id}.${fanart.extension}`
+            img.src = fanart.imageURL
             img.setAttribute('width', String(fanart.width))
             img.setAttribute('height', String(fanart.height))
 

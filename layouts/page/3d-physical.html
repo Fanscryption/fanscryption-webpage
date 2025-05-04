@@ -210,7 +210,7 @@
         <div class=gallery>
           {{ range where $projects "index" "eq" 0 }}
             <article>
-              <img src='/art/{{ .id }}.{{ .extension }}' alt=''>
+              <img src='{{ .imageURL }}' alt=''>
               <h2>{{ .title }}</h2>
               <span>{{ .discordUsername }}</span>
             </article>

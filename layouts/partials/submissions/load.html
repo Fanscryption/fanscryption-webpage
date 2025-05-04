@@ -22,9 +22,15 @@
 {{/* Build the slice Hugo-style */}}
 {{ range $p := $projects }}
   {{ $main := index $metadata $p.primaryImageURL }}
+
+  {{ $id := $p.primaryImageURL }}
+  {{ $extension := (replace (replace (lower $main.mimeType) "image/" "") "jpeg" "jpg") }}
+  {{ $imageURL := print "/art/" $id "." $extension }}
+
   {{ $submissions = $submissions | append (dict
-      "id" $p.primaryImageURL
-      "extension" (replace (replace (lower $main.mimeType) "image/" "") "jpeg" "jpg")
+      "id" $id
+      "extension" $extension
+      "imageURL" $imageURL
       "width" $main.imageMediaMetadata.width
       "height" $main.imageMediaMetadata.height
       "title" $p.title
@@ -34,12 +40,17 @@
       "index" 0
       ) }}
 
-
   {{ range $index, $sub := $p.additionalImageURLs }}
     {{ $meta := index $metadata $sub }}
+
+    {{ $extension := (replace (replace (lower $meta.mimeType) "image/" "") "jpeg" "jpg") }}
+    {{ $imageURL := print "/art/" $sub "." $extension }}
+
     {{ $submissions = $submissions | append (dict
         "id" $sub
-        "extension" (replace (replace (lower $meta.mimeType) "image/" "") "jpeg" "jpg")
+        "parent" $id
+        "extension" $extension
+        "imageURL" $imageURL
         "width" $meta.imageMediaMetadata.width
         "height" $meta.imageMediaMetadata.height
         "title" $p.title
