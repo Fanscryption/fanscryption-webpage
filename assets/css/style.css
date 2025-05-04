@@ -53,6 +53,11 @@ ul, ol {
   list-style-position: outside;
 }
 
+body:has(dialog[open]) {
+  /* vladde: this is the ugliest hack i've seen this year */
+  filter: blur(4px);
+}
+
 @font-face {
   font-family: 'Heavyweight';
   src: url('/resources/fonts/HEAVYWEIGHT.otf') format('opentype');

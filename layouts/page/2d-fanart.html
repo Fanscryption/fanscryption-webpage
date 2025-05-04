@@ -115,9 +115,50 @@
         text-shadow: 0 0.2em 1em black;
       }
 
+      #fanarts {
+        margin: 0 auto;
+      }
+
       #fanarts > article {
         width: 256px;
         margin-block-end: 16px;
+      }
+
+      dialog {
+        --total-height: 95svh;
+        --info-height: 100px;
+
+        max-width: min(1000px, 95vw);
+        padding-block-end: 0;
+        border: 1px solid #fff7;
+        background: #332929;
+        background: url('/resources/index/leather.jpg');
+      }
+
+      dialog img {
+        max-height: calc(var(--total-height) - 5svh - var(--info-height));
+      }
+
+      dialog > .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: var(--info-height);
+      }
+
+      dialog .title {
+        display: block;
+        font-size: 1.2em;
+      }
+
+      dialog::backdrop {
+        opacity: 0.5;
+        background-color: #000;
+      }
+
+      body:has(dialog[open]) {
+        /* vladde: this is the ugliest hack i've seen this year */
+        filter: blur(4px);
       }
 
       @media screen and (max-width: 1000px) {
@@ -140,7 +181,6 @@
       {{ $fanarts := partial "submissions/load.html" (dict "Type" "2D Inscryption Fanart") }}
       <section
           id=fanarts
-          style="margin: 0 auto;"
           data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'
       ></section>
 
@@ -152,20 +192,9 @@
             <a></a>
           </div>
         </article>
-
       </template>
 
       <script>
-        /** @type {Record<string, {
-         id: string,
-         extension: string,
-         width: number,
-         height: number,
-         title: string,
-         description: string,
-         socials: string,
-         discordUsername: string
-         }>} */
         const fanarts = JSON
             .parse({{ $fanarts | jsonify }})
             .reduce((acc, art) => {
@@ -217,45 +246,6 @@
 
         populate()
       </script>
-
-      <style>
-        dialog {
-          --total-height: 95svh;
-          --info-height: 100px;
-
-          max-width: min(1000px, 95vw);
-          padding-block-end: 0;
-          border: 1px solid #fff7;
-          background: #332929;
-          background: url('/resources/index/leather.jpg');
-        }
-
-        dialog img {
-          max-height: calc(var(--total-height) - 5svh - var(--info-height));
-        }
-
-        dialog > .info {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          height: var(--info-height);
-        }
-
-        dialog .title {
-          display: block;
-          font-size: 1.2em;
-        }
-
-        dialog::backdrop {
-          opacity: 0.5;
-          background-color: #000;
-        }
-
-        body:has(dialog[open]) {
-          /* vladde: this is the ugliest hack i've seen this year */
-          filter: blur(4px);
-        }
-      </style>
 
       <dialog>
         <img alt='' class=image>

@@ -26,6 +26,50 @@
       article h2 {
         margin-block: 0.5em 0.25em;
       }
+
+
+      dialog {
+        --total-height: 95svh;
+        --info-height: 200px;
+
+        max-width: min(1000px, 95vw);
+        padding-block-end: 0;
+        border: 1px solid #fff7;
+        background: #332929;
+        background: url('/resources/index/leather.jpg');
+      }
+
+      dialog img {
+        max-height: calc(var(--total-height) - 5svh - var(--info-height));
+        height: 100%;
+        width: auto;
+        margin: auto;
+      }
+
+      dialog > .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: var(--info-height);
+      }
+
+      dialog .title {
+        display: block;
+        font-size: 1.2em;
+      }
+
+      dialog .description {
+        margin-block-start: 0.5em;
+        font-style: italic;
+        max-height: 100px;
+        overflow-y: scroll;
+        max-width: 50ch;
+      }
+
+      dialog::backdrop {
+        opacity: 0.5;
+        background-color: #000;
+      }
     </style>
   </head>
   <body>
@@ -49,16 +93,6 @@
       </template>
 
       <script>
-        /** @type {Record<string, {
-         id: string,
-         extension: string,
-         width: number,
-         height: number,
-         title: string,
-         description: string,
-         socials: string,
-         discordUsername: string
-         }>} */
         const customCards = JSON
             .parse({{ $customCards | jsonify }})
             .reduce((acc, art) => {
@@ -115,53 +149,6 @@
       </script>
 
       <style>
-        dialog {
-          --total-height: 95svh;
-          --info-height: 200px;
-
-          max-width: min(1000px, 95vw);
-          padding-block-end: 0;
-          border: 1px solid #fff7;
-          background: #332929;
-          background: url('/resources/index/leather.jpg');
-        }
-
-        dialog img {
-          max-height: calc(var(--total-height) - 5svh - var(--info-height));
-          height: 100%;
-          width: auto;
-          margin: auto;
-        }
-
-        dialog > .info {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          height: var(--info-height);
-        }
-
-        dialog .title {
-          display: block;
-          font-size: 1.2em;
-        }
-
-        dialog .description {
-          margin-block-start: 0.5em;
-          font-style: italic;
-          max-height: 100px;
-          overflow-y: scroll;
-          max-width: 50ch;
-        }
-
-        dialog::backdrop {
-          opacity: 0.5;
-          background-color: #000;
-        }
-
-        body:has(dialog[open]) {
-          /* vladde: this is the ugliest hack i've seen this year */
-          filter: blur(4px);
-        }
       </style>
 
       <dialog>
