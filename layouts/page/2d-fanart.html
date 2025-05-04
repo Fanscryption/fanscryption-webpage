@@ -49,6 +49,7 @@
         overflow: hidden;
         border-radius: 8px;
         outline: 1px solid #fc83;
+        cursor: pointer;
       }
 
       article::after {
@@ -204,20 +205,87 @@
         {{ end }}
       {{ end }}
 
-      <section id=fanarts style="margin: 0 auto;" data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'>
-        {{ range $index, $artwork := $fanarts }}
-          <article>
-            <img src="/art/{{ $artwork.id }}.{{ $artwork.extension }}" alt="" width='{{ $artwork.width }}' height='{{ $artwork.height }}' />
-            <div>
-              <h2>{{ $artwork.title }}</h2>
-              <a {{ if $artwork.socials }}href='{{ $artwork.socials }}'{{ end }}>{{ $artwork.discordUsername }}</a>
-            </div>
-          </article>
-        {{ end }}
-      </section>
+      <section
+          id=fanarts
+          style="margin: 0 auto;"
+          data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'
+      ></section>
+
+      <template id=fanart-template>
+        <article>
+          <img src="" alt="">
+          <div>
+            <h2></h2>
+            <a></a>
+          </div>
+        </article>
+
+      </template>
+
+      <script>
+        /** @type {Record<string, {
+         id: string,
+         extension: string,
+         width: number,
+         height: number,
+         title: string,
+         socials: string,
+         discordUsername: string
+         }>} */
+        const fanarts = JSON
+            .parse({{ $fanarts | jsonify }})
+            .reduce((acc, art) => {
+                  acc[art.id] = art;
+                  return acc;
+                }, {}
+            );
+
+        function populate() {
+          const template = document.querySelector("#fanart-template");
+          const fanartsContainer = document.querySelector("#fanarts");
+
+          function shuffle(input) {
+            /// modified of https://stackoverflow.com/a/12646864
+            const array = [...input]
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array
+          }
+
+          const fanartsShuffled = shuffle(Object.values(fanarts))
+          for (const fanart of fanartsShuffled) {
+            const clone = template.content.cloneNode(true);
+
+            const article = clone.querySelector("article");
+            const img = clone.querySelector("img");
+            const h2 = clone.querySelector("h2");
+            const a = clone.querySelector("a");
+
+            article.id = fanart.id
+
+            img.src = `/art/${fanart.id}.${fanart.extension}`
+            img.setAttribute('width', fanart.width)
+            img.setAttribute('height', fanart.height)
+
+            h2.textContent = fanart.title
+            a.textContent = fanart.discordUsername
+
+            let socialLink = fanart.socials
+            if (socialLink) {
+              a.href = socialLink
+            }
+
+            fanartsContainer.append(clone)
+          }
+        }
+
+        populate()
+
+      </script>
 
       <style>
-
         dialog {
           --total-height: 95svh;
           --info-height: 100px;
@@ -240,16 +308,9 @@
           height: var(--info-height);
         }
 
-        dialog > .info .title {
+        dialog .title {
           display: block;
           font-size: 1.2em;
-        }
-
-        dialog > .info > form {
-        }
-
-        dialog > .info > form > button {
-
         }
 
         dialog::backdrop {
@@ -286,27 +347,29 @@
           dialog.close();
         });
 
-        const fanarts = document.querySelectorAll("#fanarts > article");
-        for (const fanart of fanarts) {
-          fanart.addEventListener("click", () => {
-            const sourceImage = fanart.querySelector("img");
-            const sourceTitle = fanart.querySelector("h2");
-            const sourceAuthor = fanart.querySelector("a");
+        const fanartElements = document.querySelectorAll("#fanarts > article");
+        for (const fanartElement of fanartElements) {
+          fanartElement.addEventListener("click", () => {
+            const fanart = fanarts[fanartElement.id]
+            if (!fanart) {
+              console.error('no id present for', fanartElement)
+              return
+            }
 
-            const image = dialog.querySelector(".image");
-            image.src = sourceImage.src;
-            image.width = sourceImage.getAttribute("width") ?? 0;
-            image.height = sourceImage.getAttribute("height") ?? 0;
+            const img = dialog.querySelector(".image");
+            img.src = `/art/${fanart.id}.${fanart.extension}`
+            img.setAttribute('width', String(fanart.width))
+            img.setAttribute('height', String(fanart.height))
 
             const title = dialog.querySelector(".title");
-            title.textContent = sourceTitle.textContent;
+            title.textContent = fanart.title;
 
             const author = dialog.querySelector(".author");
-            author.textContent = sourceAuthor.textContent;
+            author.textContent = fanart.discordUsername;
 
-            const href = sourceAuthor.getAttribute("href");
-            if (href) {
-              author.href = href
+            const socials = fanart.socials;
+            if (socials) {
+              author.href = socials
             }
 
             setTimeout(() => {
