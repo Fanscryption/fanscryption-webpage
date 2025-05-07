@@ -13,8 +13,21 @@
 
     <style>
       body {
-        max-width: 800px;
+        width: 800px;
+        max-width: 100%;
         margin: auto;
+
+        background-position: top center;
+        background-attachment: fixed;
+        background-size: 2000px;
+        background-repeat: no-repeat;
+        background-color: #000;
+      }
+
+      .background {
+        padding-inline: 2em;
+        /*background-image: url('/resources/3d/table.png');*/
+        background: #fff2;
       }
 
       #custom-cards {
@@ -23,27 +36,131 @@
         grid-template-columns: 1fr 1fr 1fr;
       }
 
+      @media screen and (max-width: 800px) {
+        #custom-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
       article h2 {
         margin-block: 0.5em 0.25em;
       }
 
+      article:hover {
+        z-index: 10;
+      }
+
+      article .images {
+        aspect-ratio: 2.5 / 3.5;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .images img {
+        position: absolute;
+        object-fit: contain;
+        object-position: center;
+        max-height: 350px;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        transition: 0.2s;
+        filter: drop-shadow(0 0 10px #000a);
+
+        &:nth-child(1) {
+          z-index: 6;
+        }
+
+        &:nth-child(2) {
+          z-index: 5;
+          scale: 0.98;
+        }
+
+        &:nth-child(3) {
+          z-index: 4;
+          scale: 0.94;
+        }
+
+        &:nth-child(4) {
+          z-index: 3;
+          scale: 0.9;
+        }
+
+        &:nth-child(5) {
+          z-index: 2;
+          scale: 0.86;
+        }
+
+        &:nth-child(6) {
+          z-index: 1;
+          scale: 0.82;
+        }
+      }
+
+      .images:hover img {
+
+        --offset-x: 5%;
+        --offset-y: 6px;
+        --rotation: 3deg;
+
+        &:nth-child(1) {
+          translate: 0 -10px;
+        }
+
+        &:nth-child(2) {
+          translate: calc(var(--offset-x) * 1) calc(var(--offset-y) * 1);
+          rotate: calc(var(--rotation) * 1);
+        }
+
+        &:nth-child(3) {
+          translate: calc(var(--offset-x) * 2) calc(var(--offset-y) * 2);
+          rotate: calc(var(--rotation) * 2);
+        }
+
+        &:nth-child(4) {
+          translate: calc(var(--offset-x) * 3) calc(var(--offset-y) * 3);
+          rotate: calc(var(--rotation) * 3);
+        }
+
+        &:nth-child(5) {
+          translate: calc(var(--offset-x) * 4) calc(var(--offset-y) * 4);
+          rotate: calc(var(--rotation) * 4);
+        }
+
+        &:nth-child(6) {
+          translate: calc(var(--offset-x) * 5) calc(var(--offset-y) * 5);
+          rotate: calc(var(--rotation) * 5);
+        }
+      }
 
       dialog {
         --total-height: 95svh;
         --info-height: 200px;
 
         max-width: min(1000px, 95vw);
-        padding-block-end: 0;
+        padding-block: 0;
         border: 1px solid #fff7;
         background: #332929;
         background: url('/resources/index/leather.jpg');
       }
 
       dialog img {
-        max-height: calc(var(--total-height) - 5svh - var(--info-height));
+        max-height: inherit;
         height: 100%;
         width: auto;
         margin: auto;
+      }
+
+      dialog .slideshow {
+        box-sizing: content-box;
+        display: flex;
+        overflow-x: scroll;
+        margin-inline: -1em;
+        padding: 1em 2em;
+        gap: 2em;
+        max-height: 60svh;
       }
 
       dialog > .info {
@@ -73,144 +190,194 @@
     </style>
   </head>
   <body>
-    <header>
-      {{ partial "navigation.html" . }}
-      <h1>{{ .Title }}</h1>
-      {{/*<p>{{ .Content }}</p>*/}}
-    </header>
-    <main>
-      {{ $customCards := partial "submissions/load.html" (dict "Type" "Custom Card (or Other Custom Assets)") }}
+    <div class=background>
+      <header>
+        {{ partial "navigation.html" . }}
+        <h1>{{ .Title }}</h1>
+        {{/*<p>{{ .Content }}</p>*/}}
+      </header>
+      <main>
+        {{ $customCards := partial "submissions/load.html" (dict "Type" "Custom Card (or Other Custom Assets)") }}
 
-      <section id=custom-cards></section>
-      <template id=custom-card-template>
-        <article>
-          <img src="" alt="">
-          <div>
-            <h2></h2>
-            <a></a>
-          </div>
-        </article>
-      </template>
+        <section id=custom-cards></section>
+        <template id=custom-card-template>
+          <article>
+            <div class=images>
+            </div>
+            <div>
+              <h2></h2>
+              <a></a>
+            </div>
+          </article>
+        </template>
 
-      <script>
-        const customCards = JSON
+        <script>
+
+          // custom cards have an optional parent property
+          // we want to group by Record<'parent id' => Card[]>
+
+          // Record<string, Card[]>
+          const customCards = JSON
             .parse({{ $customCards | jsonify }})
             .reduce((acc, art) => {
-                  acc[art.id] = art;
-                  return acc;
-                }, {}
-            );
+                let id = art.id
 
-        function populate() {
-          const template = document.querySelector("#custom-card-template");
-          const customCardsContainer = document.querySelector("#custom-cards");
+                if (art.parent) {
+                  id = art.parent
+                }
 
-          function shuffle(input) {
-            /// modified of https://stackoverflow.com/a/12646864
-            const array = [...input]
-            for (let i = array.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array
+                if (!(id in acc)) {
+                  acc[id] = [];
+                }
+
+                acc[id].push(art);
+
+                return acc;
+              }, {}
+            )
+
+          for (const [key, value] of Object.entries(customCards)) {
+            customCards[key] = value.sort((a, b) => {
+              if (a.index === null) return -1;
+              if (b.index === null) return 1;
+              return a.index - b.index;
+            });
           }
 
-          let entries = Object.values(customCards)
-          // entries = shuffle(entries)
 
-          for (const customCard of entries) {
-            const clone = template.content.cloneNode(true);
+          function populate() {
+            const template = document.querySelector("#custom-card-template");
+            const customCardsContainer = document.querySelector("#custom-cards");
 
-            const article = clone.querySelector("article");
-            const img = clone.querySelector("img");
-            const h2 = clone.querySelector("h2");
-            const a = clone.querySelector("a");
-
-            article.id = customCard.id
-
-            img.src = customCard.imageURL
-            img.setAttribute('width', customCard.width)
-            img.setAttribute('height', customCard.height)
-
-            h2.textContent = customCard.title
-            a.textContent = customCard.discordUsername
-
-            let socialLink = customCard.socials
-            if (socialLink) {
-              a.href = socialLink
+            function shuffle(input) {
+              /// modified of https://stackoverflow.com/a/12646864
+              const array = [...input]
+              for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+              }
+              return array
             }
 
-            customCardsContainer.append(clone)
+            let entries = Object.values(customCards)
+            // entries = shuffle(entries)
+
+            for (const customCards of entries) {
+              const customCard = customCards[0]
+              const clone = template.content.cloneNode(true);
+
+              const article = clone.querySelector("article");
+              const images = clone.querySelector(".images");
+              const h2 = clone.querySelector("h2");
+              const a = clone.querySelector("a");
+
+              article.id = customCard.id
+
+              // loop custom cards and create images
+              for (const customCard of customCards) {
+                const img = document.createElement("img");
+                img.src = customCard.imageURL
+                img.setAttribute('width', customCard.width)
+                img.setAttribute('height', customCard.height)
+                images.append(img)
+              }
+
+              h2.textContent = customCard.title
+              a.textContent = customCard.discordUsername
+
+              let socialLink = customCard.socials
+              if (socialLink) {
+                a.href = socialLink
+              }
+
+              customCardsContainer.append(clone)
+            }
           }
-        }
 
-        populate()
+          populate()
 
-      </script>
+        </script>
 
-      <style>
-      </style>
+        <style>
+        </style>
 
-      <dialog>
-        <img alt='' class=image>
+        <dialog>
+          <div class=slideshow>
 
-        <div class=info>
-          <div class=credits>
-            <span class=title></span>
-            <a class=author></a>
-            <p class=description></p>
           </div>
 
-          <form method="dialog">
-            <button>Close</button>
-          </form>
-        </div>
-      </dialog>
+          <div class=info>
+            <div class=credits>
+              <span class=title></span>
+              <a class=author></a>
+              <p class=description></p>
+            </div>
 
-      <script>
-        const dialog = document.querySelector("dialog");
-        const closeButton = document.querySelector("dialog button");
+            <form method="dialog">
+              <button>Close</button>
+            </form>
+          </div>
+        </dialog>
 
-        closeButton.addEventListener("click", () => {
-          dialog.close();
-        });
+        <script>
+          const dialog = document.querySelector("dialog");
+          const closeButton = document.querySelector("dialog button");
 
-        const fanartElements = document.querySelectorAll("#custom-cards > article");
-        for (const customCardElement of fanartElements) {
-          customCardElement.addEventListener("click", () => {
-            const customCard = customCards[customCardElement.id]
-            if (!customCard) {
-              console.error('no id present for', customCardElement)
-              return
-            }
-
-            const img = dialog.querySelector(".image");
-            img.src = customCard.imageURL
-            img.setAttribute('width', String(customCard.width))
-            img.setAttribute('height', String(customCard.height))
-
-            const title = dialog.querySelector(".title");
-            title.textContent = customCard.title;
-
-            const author = dialog.querySelector(".author");
-            author.textContent = customCard.discordUsername;
-
-            const description = dialog.querySelector(".description")
-            description.textContent = customCard.description
-
-            const socials = customCard.socials;
-            if (socials) {
-              author.href = socials
-            }
-
-            setTimeout(() => {
-              // vladde: hack to make not overlay image flicker on popup
-              dialog.showModal();
-            }, 0);
+          closeButton.addEventListener("click", () => {
+            dialog.close();
           });
-        }
 
-      </script>
-    </main>
+          const fanartElements = document.querySelectorAll("#custom-cards > article");
+          for (const customCardElement of fanartElements) {
+            customCardElement.querySelector('.images').addEventListener("click", () => {
+              const cc = customCards[customCardElement.id]
+              const customCard = cc[0]
+              if (!customCard) {
+                console.error('no id present for', customCardElement)
+                return
+              }
+
+              /*
+              const img = dialog.querySelector(".image");
+              img.src = customCard.imageURL
+              img.setAttribute('width', String(customCard.width))
+              img.setAttribute('height', String(customCard.height))
+              */
+              const slideshow = dialog.querySelector(".slideshow");
+
+              // loop; (const c of cc), add img
+              slideshow.innerHTML = ""
+              for (const c of cc) {
+                const img = document.createElement("img");
+                img.src = c.imageURL
+                img.setAttribute('width', c.width)
+                img.setAttribute('height', c.height)
+                slideshow.append(img)
+              }
+
+              const title = dialog.querySelector(".title");
+              title.textContent = customCard.title;
+
+              const author = dialog.querySelector(".author");
+              author.textContent = customCard.discordUsername;
+
+              const description = dialog.querySelector(".description")
+              description.textContent = customCard.description
+
+              const socials = customCard.socials;
+              if (socials) {
+                author.href = socials
+              }
+
+              setTimeout(() => {
+                // vladde: hack to make not overlay image flicker on popup
+                dialog.showModal();
+              }, 0);
+            });
+          }
+
+        </script>
+      </main>
+    </div>
   </body>
 </html>
