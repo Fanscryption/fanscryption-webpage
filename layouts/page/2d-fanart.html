@@ -13,7 +13,11 @@
 
     <style>
       body {
-        background: url('/resources/index/leather.jpg');
+        background: linear-gradient(transparent, black), url('/resources/placeholder.jpg'), black;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-attachment: fixed;
+        background-size: 2000px;
       }
 
       main, header {
@@ -36,6 +40,7 @@
       h1 {
         text-align: center;
         font-size: 3em;
+        margin-block: 4em 1em;
       }
 
       img {
