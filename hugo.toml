@@ -28,3 +28,8 @@ weight = 4
 name = "Community Contributors"
 url = "/creators/"
 weight = 5
+
+[[menu.main]]
+name = "Credits"
+url = "/credits/"
+weight = 6

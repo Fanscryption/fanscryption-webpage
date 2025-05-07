@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Cards</title>
+
+    {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+    <style>
+      body {
+        max-width: 800px;
+        width: 100%;
+        margin: auto;
+      }
+
+      dd + dt {
+        margin-top: 1em;
+      }
+
+      dt {
+        font-weight: bold;
+      }
+
+      dt > a {
+        color: unset;
+      }
+    </style>
+  </head>
+  <body>
+    <div class=background>
+      <header>
+        {{ partial "navigation.html" . }}
+        <h1>{{ .Title }}</h1>
+      </header>
+      <main>
+        <p>This page is only possible thanks to the many contributions from multiple people. This would not have been possible without the help from everyone involved <3.</p>
+
+        <dl>
+          <dt>LeshyIRL</dt>
+          <dd>Overseeing the community and the creation of this webpage</dd>
+
+          <dt><a href=https://youtube.com/c/vladde>vladde</a></dt>
+          <dd>Lead developer for this webpage</dd>
+
+          <dt><a href=https://www.artstation.com/davision>Davision</a></dt>
+          <dd>Production of 3D models and textures for <i>Physical / 3D</i> page</dd>
+
+          <dt>gab3arts</dt>
+          <dd>Leshy drawing and background art used on the <i>landing page</i></dd>
+
+          <dt><a href=https://crypticcrafter.com/>nathybathy</a></dt>
+          <dd>Design of <i>Community Contributors</i> page</dd>
+
+          <dt><a href=https://www.artstation.com/marceloorsiblanco>Marcelo Orsi</a></dt>
+          <dd>Background art of <i>2D Fanart</i> page</dd>
+
+          <dt>Firepillow</dt>
+          <dd>Skull icons on the <i>landing page</i></dd>
+
+          <dt><a href=https://www.danielmullinsgames.com/>Daniel Mullins</a></dt>
+          <dd>Creator of assets for Inscryption</dd>
+        </dl>
+      </main>
+    </div>
+  </body>
+</html>
