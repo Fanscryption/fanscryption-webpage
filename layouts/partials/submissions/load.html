@@ -28,37 +28,42 @@
   {{ $imageURL := print "/art/" $id "." $extension }}
 
   {{ $submissions = $submissions | append (dict
-      "id" $id
-      "extension" $extension
-      "imageURL" $imageURL
-      "width" $main.imageMediaMetadata.width
-      "height" $main.imageMediaMetadata.height
-      "title" $p.title
-      "description" $p.description
-      "socials" $p.socials
-      "discordUsername" $p.discordUsername
-      "index" 0
-      ) }}
+    "id" $id
+    "extension" $extension
+    "imageURL" $imageURL
+    "width" $main.imageMediaMetadata.width
+    "height" $main.imageMediaMetadata.height
+    "title" $p.title
+    "description" $p.description
+    "socials" $p.socials
+    "discordUsername" $p.discordUsername
+    "index" 0
+    ) }}
 
   {{ range $index, $sub := $p.additionalImageURLs }}
     {{ $meta := index $metadata $sub }}
+
+    {{ if not $meta }}
+      {{ warnf "could not find metadata for %q. is submission an image?" $sub }}
+      {{ continue }}
+    {{ end }}
 
     {{ $extension := (replace (replace (lower $meta.mimeType) "image/" "") "jpeg" "jpg") }}
     {{ $imageURL := print "/art/" $sub "." $extension }}
 
     {{ $submissions = $submissions | append (dict
-        "id" $sub
-        "parent" $id
-        "extension" $extension
-        "imageURL" $imageURL
-        "width" $meta.imageMediaMetadata.width
-        "height" $meta.imageMediaMetadata.height
-        "title" $p.title
-        "description" $p.description
-        "socials" $p.socials
-        "discordUsername" $p.discordUsername
-        "index" (add $index 1)
-        ) }}
+      "id" $sub
+      "parent" $id
+      "extension" $extension
+      "imageURL" $imageURL
+      "width" $meta.imageMediaMetadata.width
+      "height" $meta.imageMediaMetadata.height
+      "title" $p.title
+      "description" $p.description
+      "socials" $p.socials
+      "discordUsername" $p.discordUsername
+      "index" (add $index 1)
+      ) }}
   {{ end }}
 {{ end }}
 
