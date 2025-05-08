@@ -70,8 +70,7 @@ jobs:
           bun install
           echo "${{ secrets.FETCH_ENV }}" > .env
           echo "${{ secrets.FETCH_CREDENTIALS }}" > credentials.json
-          bun run index.ts
-          cd ../../..
+          bun run index.ts && cd ../../..
 
       - name: install imagemagick
         uses: mfinelli/setup-imagemagick@v6
