@@ -241,7 +241,7 @@
             img.setAttribute('height', fanart.height)
 
             h2.textContent = fanart.title
-            a.textContent = fanart.discordUsername
+            a.textContent = fanart.author
 
             let socialLink = fanart.socials
             if (socialLink) {
@@ -302,7 +302,7 @@
             title.textContent = fanart.title;
 
             const author = dialog.querySelector(".author");
-            author.textContent = fanart.discordUsername;
+            author.textContent = fanart.author;
 
             const socials = fanart.socials;
             if (socials) {

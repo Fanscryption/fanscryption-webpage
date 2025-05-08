@@ -323,7 +323,7 @@
             }
 
             h2.textContent = customCard.title
-            a.textContent = customCard.discordUsername
+            a.textContent = customCard.author
 
             let socialLink = customCard.socials
             if (socialLink) {
@@ -392,7 +392,7 @@
             title.textContent = customCard.title;
 
             const author = dialog.querySelector(".author");
-            author.textContent = customCard.discordUsername;
+            author.textContent = customCard.author;
 
             const description = dialog.querySelector(".description")
             description.textContent = customCard.description

@@ -264,7 +264,7 @@
             <article id='{{ .id }}'>
               <img src='{{ .imageURL }}' alt=''>
               <h2>{{ .title }}</h2>
-              <span>{{ .discordUsername }}</span>
+              <span>{{ .author }}</span>
             </article>
           {{ end }}
         </div>
@@ -354,7 +354,7 @@
           title.textContent = project.title;
 
           const author = dialog.querySelector(".author");
-          author.textContent = project.discordUsername;
+          author.textContent = project.author;
 
           const description = dialog.querySelector(".description")
           description.textContent = project.description
