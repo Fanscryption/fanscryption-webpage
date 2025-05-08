@@ -368,8 +368,8 @@
           }
         })
 
-        const fanartElements = document.querySelectorAll("#custom-cards > article");
-        for (const customCardElement of fanartElements) {
+        const customCardElements = document.querySelectorAll("#custom-cards > article");
+        for (const customCardElement of customCardElements) {
           customCardElement.querySelector('.images').addEventListener("click", () => {
             const cc = customCards[customCardElement.id]
             const customCard = cc[0]
