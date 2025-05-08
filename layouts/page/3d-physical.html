@@ -197,7 +197,6 @@
         }
       }
 
-
       dialog {
         --total-height: 95svh;
         --info-height: 200px;
@@ -220,8 +219,8 @@
         box-sizing: content-box;
         display: flex;
         overflow-x: scroll;
-        margin-inline: -3em;
-        padding: 1em 3em;
+        margin-inline: 0;
+        padding: 1em 0;
         gap: 2em;
         max-height: 60svh;
       }
@@ -270,108 +269,108 @@
           {{ end }}
         </div>
       </main>
-
-      <dialog>
-        <div class=slideshow></div>
-
-        <div class=info>
-          <div class=credits>
-            <span class=title></span>
-            <a class=author></a>
-            <p class=description></p>
-          </div>
-
-          <form method="dialog">
-            <button>Close</button>
-          </form>
-        </div>
-      </dialog>
-
-      <script>
-
-        const projects = JSON
-          .parse({{ $projects | jsonify }})
-          .reduce((acc, art) => {
-              let id = art.id
-
-              if (art.parent) {
-                id = art.parent
-              }
-
-              if (!(id in acc)) {
-                acc[id] = [];
-              }
-
-              acc[id].push(art);
-
-              return acc;
-            }, {}
-          )
-
-        for (const [key, value] of Object.entries(projects)) {
-          projects[key] = value.sort((a, b) => {
-            if (a.index === null) return -1;
-            if (b.index === null) return 1;
-            return a.index - b.index;
-          });
-        }
-
-        const dialog = document.querySelector("dialog");
-        const closeButton = document.querySelector("dialog button");
-
-        closeButton.addEventListener("click", () => {
-          dialog.close()
-        })
-
-        dialog.addEventListener('click', e => {
-          if (e.target === dialog) {
-            dialog.close()
-          }
-        })
-
-        const projectElements = document.querySelectorAll(".gallery > article");
-        console.log(projectElements)
-        for (const projectElement of projectElements) {
-          projectElement.querySelector('img').addEventListener("click", () => {
-            const cc = projects[projectElement.id]
-            const project = cc[0]
-            if (!project) {
-              console.error('no id present for', projectElement)
-              return
-            }
-            const slideshow = dialog.querySelector(".slideshow");
-
-            slideshow.innerHTML = ""
-            for (const c of cc) {
-              const img = document.createElement("img");
-              img.src = c.imageURL
-              img.setAttribute('width', c.width)
-              img.setAttribute('height', c.height)
-              slideshow.append(img)
-            }
-
-            const title = dialog.querySelector(".title");
-            title.textContent = project.title;
-
-            const author = dialog.querySelector(".author");
-            author.textContent = project.discordUsername;
-
-            const description = dialog.querySelector(".description")
-            description.textContent = project.description
-
-            const socials = project.socials;
-            if (socials) {
-              author.href = socials
-            }
-
-            setTimeout(() => {
-              // vladde: hack to make not overlay image flicker on popup
-              dialog.showModal();
-            }, 0);
-          });
-        }
-
-      </script>
     </div>
+
+    <dialog>
+      <div class=slideshow></div>
+
+      <div class=info>
+        <div class=credits>
+          <span class=title></span>
+          <a class=author></a>
+          <p class=description></p>
+        </div>
+
+        <form method="dialog">
+          <button>Close</button>
+        </form>
+      </div>
+    </dialog>
+
+    <script>
+
+      const projects = JSON
+        .parse({{ $projects | jsonify }})
+        .reduce((acc, art) => {
+            let id = art.id
+
+            if (art.parent) {
+              id = art.parent
+            }
+
+            if (!(id in acc)) {
+              acc[id] = [];
+            }
+
+            acc[id].push(art);
+
+            return acc;
+          }, {}
+        )
+
+      for (const [key, value] of Object.entries(projects)) {
+        projects[key] = value.sort((a, b) => {
+          if (a.index === null) return -1;
+          if (b.index === null) return 1;
+          return a.index - b.index;
+        });
+      }
+
+      const dialog = document.querySelector("dialog");
+      const closeButton = document.querySelector("dialog button");
+
+      closeButton.addEventListener("click", () => {
+        dialog.close()
+      })
+
+      dialog.addEventListener('click', e => {
+        if (e.target === dialog) {
+          dialog.close()
+        }
+      })
+
+      const projectElements = document.querySelectorAll(".gallery > article");
+      console.log(projectElements)
+      for (const projectElement of projectElements) {
+        projectElement.querySelector('img').addEventListener("click", () => {
+          const cc = projects[projectElement.id]
+          const project = cc[0]
+          if (!project) {
+            console.error('no id present for', projectElement)
+            return
+          }
+          const slideshow = dialog.querySelector(".slideshow");
+
+          slideshow.innerHTML = ""
+          for (const c of cc) {
+            const img = document.createElement("img");
+            img.src = c.imageURL
+            img.setAttribute('width', c.width)
+            img.setAttribute('height', c.height)
+            slideshow.append(img)
+          }
+
+          const title = dialog.querySelector(".title");
+          title.textContent = project.title;
+
+          const author = dialog.querySelector(".author");
+          author.textContent = project.discordUsername;
+
+          const description = dialog.querySelector(".description")
+          description.textContent = project.description
+
+          const socials = project.socials;
+          if (socials) {
+            author.href = socials
+          }
+
+          setTimeout(() => {
+            // vladde: hack to make not overlay image flicker on popup
+            dialog.showModal();
+          }, 0);
+        });
+      }
+
+    </script>
   </body>
 </html>
