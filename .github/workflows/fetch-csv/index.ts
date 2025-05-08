@@ -1,5 +1,5 @@
 import {google} from "googleapis";
-import {createWriteStream, existsSync, writeFileSync} from "fs";
+import {createWriteStream, existsSync, mkdirSync, writeFileSync} from "fs";
 
 const auth = new google.auth.GoogleAuth({
     keyFile: './credentials.json',
@@ -26,6 +26,12 @@ interface ImageMetadata {
         height: number,
         rotation: number,
     },
+}
+
+const assetsDataDir = '../../../assets/data/'
+if (!existsSync(assetsDataDir)) {
+    console.log('creating directory', assetsDataDir);
+    mkdirSync(assetsDataDir, {recursive: true});
 }
 
 const folderIds = [process.env.FOLDER_1_ID!, process.env.FOLDER_2_ID!];
@@ -124,6 +130,13 @@ const json = JSON.stringify(ret, null, 2)
 writeFileSync('../../../assets/data/responses.json', json);
 console.log('did write; done.')
 
+
+const artDir = '../../../static/art/'
+if (!existsSync(artDir)) {
+    console.log('creating directory', artDir);
+    mkdirSync(artDir, {recursive: true});
+}
+
 async function downloadFileId(fileId: string): Promise<void> {
 
     const filename = filenameFromFileId(fileId, metadatasMap)
@@ -132,7 +145,7 @@ async function downloadFileId(fileId: string): Promise<void> {
         return
     }
 
-    const filePath = '../../../static/art/' + filename;
+    const filePath = artDir + filename;
 
     let res = await drive.files
         .get({fileId: fileId, alt: 'media'}, {responseType: 'stream'})
