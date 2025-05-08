@@ -62,12 +62,12 @@ jobs:
       - name: Configure Git
         run: git config core.quotepath false
 
-
       - uses: oven-sh/setup-bun@v2
 
       - name: place .env from secrets
         run: |
           cd .github/workflows/fetch-csv
+          bun install
           echo "${{ secrets.FETCH_ENV }}" > .env
           echo "${{ secrets.FETCH_CREDENTIALS }}" > credentials.json
           bun run index.ts
