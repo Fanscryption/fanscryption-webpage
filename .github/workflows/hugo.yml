@@ -69,7 +69,7 @@ jobs:
           cd .github/workflows/fetch-csv
           bun install
           echo "${{ secrets.FETCH_ENV }}" > .env
-          echo "${{ secrets.FETCH_CREDENTIALS }}" > credentials.json
+          echo '${{ secrets.FETCH_CREDENTIALS }}' > credentials.json
           head -n 2 .env
           head -n 2 credentials.json
           bun run index.ts
