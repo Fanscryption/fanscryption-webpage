@@ -12,25 +12,64 @@
       body {
         width: 800px;
         max-width: 100%;
-        margin: auto;
+        margin: 2em auto;
 
         background-position: top center;
         background-attachment: fixed;
-        background-size: 2000px;
+        background-size: cover;
         background-repeat: no-repeat;
         background-color: #000;
+        background-image: url('/resources/customcards/skybox.jpg');
+      }
+
+      header {
+        margin-block-end: 2em;
+      }
+
+      h1, main > h2 {
+        margin-block: 1em 0.25em;
+      }
+
+      header > nav > ul {
+        list-style: none;
+        font-size: 0.9em;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1em;
+      }
+
+      header > nav > ul a {
+        color: inherit;
       }
 
       .background {
-        padding-inline: 2em;
-        /*background-image: url('/resources/3d/table.png');*/
-        background: #fff2;
+        padding: 0.5em 3em;
+        border-radius: 1em;
+        border-top: 1px solid #fff3;
+        border-bottom: 1px solid #fff1;
+
+        --background-color-rgb: 40, 40, 50;
+        background: linear-gradient(60deg,
+        rgba(var(--background-color-rgb), 0) 0%,
+        rgba(var(--background-color-rgb), .6) 30%,
+        rgba(var(--background-color-rgb), 0) 31%,
+        rgba(var(--background-color-rgb), 0) 75%,
+        rgba(var(--background-color-rgb), .6) 76%,
+        rgba(var(--background-color-rgb), .2) 100%
+        ),
+        rgb(var(--background-color-rgb), .65);
+
+        backdrop-filter: blur(4px);
       }
 
       #custom-cards {
         display: grid;
         gap: 2em 1em;
         grid-template-columns: 1fr 1fr 1fr;
+
+        padding-block: 2em;
       }
 
       @media screen and (max-width: 800px) {
@@ -63,11 +102,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
 
-        transition: 0.2s;
-        filter: drop-shadow(0 0 10px #000a);
+        transition: 0.1s ease-out;
+        filter: drop-shadow(0 0 10px #0005);
 
         &:nth-child(1) {
           z-index: 6;
+          filter: drop-shadow(0 0 10px #000);
         }
 
         &:nth-child(2) {
@@ -138,7 +178,7 @@
 
         max-width: min(1000px, 95vw);
         padding-block: 0;
-        border: 1px solid #fff7;
+        border: none;
         background: #332929;
         background: url('/resources/index/leather.jpg');
       }
@@ -154,8 +194,8 @@
         box-sizing: content-box;
         display: flex;
         overflow-x: scroll;
-        margin-inline: -1em;
-        padding: 1em 2em;
+        margin-inline: -3em;
+        padding: 1em 3em;
         gap: 2em;
         max-height: 60svh;
       }
@@ -187,194 +227,189 @@
     </style>
   </head>
   <body>
-    <div class=background>
-      <header>
-        {{ partial "navigation.html" . }}
-        <h1>{{ .Title }}</h1>
-        {{/*<p>{{ .Content }}</p>*/}}
-      </header>
-      <main>
-        {{ $customCards := partial "submissions/load.html" (dict "Type" "Custom Card (or Other Custom Assets)") }}
 
-        <section id=custom-cards></section>
-        <template id=custom-card-template>
-          <article>
-            <div class=images>
-            </div>
-            <div>
-              <h2></h2>
-              <a></a>
-            </div>
-          </article>
-        </template>
+    <header class=background>
+      {{ partial "navigation.html" . }}
+    </header>
 
-        <script>
+    <main class=background>
 
-          // custom cards have an optional parent property
-          // we want to group by Record<'parent id' => Card[]>
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
 
-          // Record<string, Card[]>
-          const customCards = JSON
-            .parse({{ $customCards | jsonify }})
-            .reduce((acc, art) => {
-                let id = art.id
+      {{ $customCards := partial "submissions/load.html" (dict "Type" "Custom Card (or Other Custom Assets)") }}
 
-                if (art.parent) {
-                  id = art.parent
-                }
-
-                if (!(id in acc)) {
-                  acc[id] = [];
-                }
-
-                acc[id].push(art);
-
-                return acc;
-              }, {}
-            )
-
-          for (const [key, value] of Object.entries(customCards)) {
-            customCards[key] = value.sort((a, b) => {
-              if (a.index === null) return -1;
-              if (b.index === null) return 1;
-              return a.index - b.index;
-            });
-          }
-
-
-          function populate() {
-            const template = document.querySelector("#custom-card-template");
-            const customCardsContainer = document.querySelector("#custom-cards");
-
-            function shuffle(input) {
-              /// modified of https://stackoverflow.com/a/12646864
-              const array = [...input]
-              for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-              }
-              return array
-            }
-
-            let entries = Object.values(customCards)
-            // entries = shuffle(entries)
-
-            for (const customCards of entries) {
-              const customCard = customCards[0]
-              const clone = template.content.cloneNode(true);
-
-              const article = clone.querySelector("article");
-              const images = clone.querySelector(".images");
-              const h2 = clone.querySelector("h2");
-              const a = clone.querySelector("a");
-
-              article.id = customCard.id
-
-              // loop custom cards and create images
-              for (const customCard of customCards) {
-                const img = document.createElement("img");
-                img.src = customCard.imageURL
-                img.setAttribute('width', customCard.width)
-                img.setAttribute('height', customCard.height)
-                images.append(img)
-              }
-
-              h2.textContent = customCard.title
-              a.textContent = customCard.discordUsername
-
-              let socialLink = customCard.socials
-              if (socialLink) {
-                a.href = socialLink
-              }
-
-              customCardsContainer.append(clone)
-            }
-          }
-
-          populate()
-
-        </script>
-
-        <style>
-        </style>
-
-        <dialog>
-          <div class=slideshow>
-
+      <section id=custom-cards></section>
+      <template id=custom-card-template>
+        <article>
+          <div class=images>
           </div>
-
-          <div class=info>
-            <div class=credits>
-              <span class=title></span>
-              <a class=author></a>
-              <p class=description></p>
-            </div>
-
-            <form method="dialog">
-              <button>Close</button>
-            </form>
+          <div>
+            <h2></h2>
+            <a></a>
           </div>
-        </dialog>
+        </article>
+      </template>
 
-        <script>
-          const dialog = document.querySelector("dialog");
-          const closeButton = document.querySelector("dialog button");
+      <script>
 
-          closeButton.addEventListener("click", () => {
-            dialog.close();
+        // custom cards have an optional parent property
+        // we want to group by Record<'parent id' => Card[]>
+
+        // Record<string, Card[]>
+        const customCards = JSON
+          .parse({{ $customCards | jsonify }})
+          .reduce((acc, art) => {
+              let id = art.id
+
+              if (art.parent) {
+                id = art.parent
+              }
+
+              if (!(id in acc)) {
+                acc[id] = [];
+              }
+
+              acc[id].push(art);
+
+              return acc;
+            }, {}
+          )
+
+        for (const [key, value] of Object.entries(customCards)) {
+          customCards[key] = value.sort((a, b) => {
+            if (a.index === null) return -1;
+            if (b.index === null) return 1;
+            return a.index - b.index;
           });
+        }
 
-          const fanartElements = document.querySelectorAll("#custom-cards > article");
-          for (const customCardElement of fanartElements) {
-            customCardElement.querySelector('.images').addEventListener("click", () => {
-              const cc = customCards[customCardElement.id]
-              const customCard = cc[0]
-              if (!customCard) {
-                console.error('no id present for', customCardElement)
-                return
-              }
 
-              /*
-              const img = dialog.querySelector(".image");
-              img.src = customCard.imageURL
-              img.setAttribute('width', String(customCard.width))
-              img.setAttribute('height', String(customCard.height))
-              */
-              const slideshow = dialog.querySelector(".slideshow");
+        function populate() {
+          const template = document.querySelector("#custom-card-template");
+          const customCardsContainer = document.querySelector("#custom-cards");
 
-              // loop; (const c of cc), add img
-              slideshow.innerHTML = ""
-              for (const c of cc) {
-                const img = document.createElement("img");
-                img.src = c.imageURL
-                img.setAttribute('width', c.width)
-                img.setAttribute('height', c.height)
-                slideshow.append(img)
-              }
-
-              const title = dialog.querySelector(".title");
-              title.textContent = customCard.title;
-
-              const author = dialog.querySelector(".author");
-              author.textContent = customCard.discordUsername;
-
-              const description = dialog.querySelector(".description")
-              description.textContent = customCard.description
-
-              const socials = customCard.socials;
-              if (socials) {
-                author.href = socials
-              }
-
-              setTimeout(() => {
-                // vladde: hack to make not overlay image flicker on popup
-                dialog.showModal();
-              }, 0);
-            });
+          function shuffle(input) {
+            /// modified of https://stackoverflow.com/a/12646864
+            const array = [...input]
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array
           }
 
-        </script>
-      </main>
-    </div>
+          let entries = Object.values(customCards)
+          // entries = shuffle(entries)
+
+          for (const customCards of entries) {
+            const customCard = customCards[0]
+            const clone = template.content.cloneNode(true);
+
+            const article = clone.querySelector("article");
+            const images = clone.querySelector(".images");
+            const h2 = clone.querySelector("h2");
+            const a = clone.querySelector("a");
+
+            article.id = customCard.id
+
+            // loop custom cards and create images
+            for (const customCard of customCards) {
+              const img = document.createElement("img");
+              img.src = customCard.imageURL
+              img.setAttribute('width', customCard.width)
+              img.setAttribute('height', customCard.height)
+              images.append(img)
+            }
+
+            h2.textContent = customCard.title
+            a.textContent = customCard.discordUsername
+
+            let socialLink = customCard.socials
+            if (socialLink) {
+              a.href = socialLink
+            }
+
+            customCardsContainer.append(clone)
+          }
+        }
+
+        populate()
+
+      </script>
+
+      <dialog class=background>
+        <div class=slideshow></div>
+
+        <div class=info>
+          <div class=credits>
+            <span class=title></span>
+            <a class=author></a>
+            <p class=description></p>
+          </div>
+
+          <form method="dialog">
+            <button>Close</button>
+          </form>
+        </div>
+      </dialog>
+
+      <script>
+        const dialog = document.querySelector("dialog");
+        const closeButton = document.querySelector("dialog button");
+
+        closeButton.addEventListener("click", () => {
+          dialog.close()
+        })
+
+        dialog.addEventListener('click', e => {
+          if (e.target === dialog) {
+            dialog.close()
+          }
+        })
+
+        const fanartElements = document.querySelectorAll("#custom-cards > article");
+        for (const customCardElement of fanartElements) {
+          customCardElement.querySelector('.images').addEventListener("click", () => {
+            const cc = customCards[customCardElement.id]
+            const customCard = cc[0]
+            if (!customCard) {
+              console.error('no id present for', customCardElement)
+              return
+            }
+            const slideshow = dialog.querySelector(".slideshow");
+
+            slideshow.innerHTML = ""
+            for (const c of cc) {
+              const img = document.createElement("img");
+              img.src = c.imageURL
+              img.setAttribute('width', c.width)
+              img.setAttribute('height', c.height)
+              slideshow.append(img)
+            }
+
+            const title = dialog.querySelector(".title");
+            title.textContent = customCard.title;
+
+            const author = dialog.querySelector(".author");
+            author.textContent = customCard.discordUsername;
+
+            const description = dialog.querySelector(".description")
+            description.textContent = customCard.description
+
+            const socials = customCard.socials;
+            if (socials) {
+              author.href = socials
+            }
+
+            setTimeout(() => {
+              // vladde: hack to make not overlay image flicker on popup
+              dialog.showModal();
+            }, 0);
+          });
+        }
+
+      </script>
+    </main>
   </body>
 </html>
