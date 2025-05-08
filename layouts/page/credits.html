@@ -30,6 +30,20 @@
       dd > span {
         cursor: pointer;
       }
+
+      header > nav > ul {
+        list-style: none;
+        font-size: 0.9em;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+      }
+
+      header > nav > ul a {
+        color: inherit;
+        text-decoration: none;
+      }
     </style>
 
     <script data-tracking>
@@ -50,7 +64,7 @@
         <h1>{{ .Title }}</h1>
       </header>
       <main>
-        <p>This page is only possible thanks to the many contributions from multiple people. This would not have been possible without the help from everyone involved <3.</p>
+        {{ .Content }}
 
         <dl>
           <dt>LeshyIRL</dt>
