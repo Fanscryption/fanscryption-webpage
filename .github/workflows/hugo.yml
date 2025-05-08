@@ -71,7 +71,6 @@ jobs:
           echo "${{ secrets.FETCH_ENV }}" > .env
           echo "${{ secrets.FETCH_CREDENTIALS }}" > credentials.json
           bun run index.ts
-          rm -f .env credentials.json
           cd ../../..
 
       - name: install imagemagick
