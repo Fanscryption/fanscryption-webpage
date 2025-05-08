@@ -25,16 +25,19 @@
         margin: auto;
       }
 
-      nav > ul {
-        display: flex;
-        gap: 1em;
+      header > nav > ul {
         list-style: none;
-        padding: 1em 0;
-        margin: 0;
+        font-size: 0.9em;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1em;
       }
 
-      nav > ul a {
+      header > nav > ul a {
         color: inherit;
+        text-decoration: none;
       }
 
       h1 {
@@ -185,8 +188,8 @@
     <main>
       {{ $fanarts := partial "submissions/load.html" (dict "Type" "2D Inscryption Fanart") }}
       <section
-          id=fanarts
-          data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'
+        id=fanarts
+        data-masonry='{ "itemSelector": "#fanarts > article", "gutter": 16, "fitWidth": true }'
       ></section>
 
       <template id=fanart-template>
@@ -201,12 +204,12 @@
 
       <script>
         const fanarts = JSON
-            .parse({{ $fanarts | jsonify }})
-            .reduce((acc, art) => {
-                  acc[art.id] = art;
-                  return acc;
-                }, {}
-            );
+          .parse({{ $fanarts | jsonify }})
+          .reduce((acc, art) => {
+              acc[art.id] = art;
+              return acc;
+            }, {}
+          );
 
         function populate() {
           const template = document.querySelector("#fanart-template");
@@ -274,6 +277,12 @@
         closeButton.addEventListener("click", () => {
           dialog.close();
         });
+
+        dialog.addEventListener('click', e => {
+          if (e.target === dialog) {
+            dialog.close()
+          }
+        })
 
         const fanartElements = document.querySelectorAll("#fanarts > article");
         for (const fanartElement of fanartElements) {
