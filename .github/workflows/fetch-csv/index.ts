@@ -61,7 +61,7 @@ writeFileSync('../../../assets/data/images-metadata.json', JSON.stringify(metada
 const res = await sheets.spreadsheets.values.get(
     {
         spreadsheetId: process.env.SHEET_1_ID!,
-        range: 'Responses!A:L',
+        range: 'Responses!A:M',
     }
 );
 
@@ -75,7 +75,7 @@ rows.shift(); // remove first line
 
 const ret = [];
 for (const row of rows) {
-    const approved = row[11] === 'Approved';
+    const approved = row[12] === 'Approved';
     if (!approved) {
         continue;
     }
@@ -99,6 +99,7 @@ for (const row of rows) {
 
     const canShare = row[9];
     const discordUsername = row[10];
+    const author = row[11];
 
     const d = {
         timestamp,
@@ -113,6 +114,7 @@ for (const row of rows) {
         canShare,
         discordUsername,
         approved,
+        author,
     }
 
     ret.push(d);
