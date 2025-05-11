@@ -325,11 +325,8 @@
             h2.textContent = customCard.title
             a.textContent = customCard.author
 
-            let socialLink = customCard.socials
-            if (socialLink) {
-              a.href = socialLink
-            }
-
+            a.href = customCard.socials || ''
+            
             customCardsContainer.append(clone)
           }
         }

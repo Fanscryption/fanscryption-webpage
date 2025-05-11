@@ -361,10 +361,7 @@
           const description = dialog.querySelector(".description")
           description.textContent = project.description
 
-          const socials = project.socials;
-          if (socials) {
-            author.href = socials
-          }
+          author.href = project.socials || ''
 
           setTimeout(() => {
             // vladde: hack to make not overlay image flicker on popup

@@ -243,10 +243,7 @@
             h2.textContent = fanart.title
             a.textContent = fanart.author
 
-            let socialLink = fanart.socials
-            if (socialLink) {
-              a.href = socialLink
-            }
+            a.href = fanart.socials || ''
 
             fanartsContainer.append(clone)
           }
